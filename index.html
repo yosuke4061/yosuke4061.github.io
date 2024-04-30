@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>3D Visualization</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: #121212;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+        }
+        .header {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            font-family: 'Papyrus', 'Comic Sans MS', cursive; /* Papyrus as primary, with fallbacks */
+        }
+        .description {
+            margin: 20px 0;
+            font-size: 0.5em;
+            line-height: 1.6;
+        }
+        .links, .special-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+        .link-card, .special-link-card {
+            background: #333;
+            padding: 30px;
+            border-radius: 10px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .link-card:hover, .special-link-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 6px 30px rgba(0,0,0,0.5);
+        }
+        .special-link-card {
+            background: #444; /* Slightly lighter to stand out */
+            border: 2px solid #4CAF50; /* Green border */
+        }
+        a {
+            color: #4CAF50;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        a:hover {
+            color: #81C784;
+        }
+        @media (max-width: 600px) {
+            .header {
+                font-size: 2em;
+            }
+            .link-card, .special-link-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">Midori Photo Art</div>
+        <div class="description">
+            ここは、WebGLを使った新感覚の3Dウェブサイトです。一枚の写真を情報空間に飾ることで、まるでその作品の中に入り込んだかのような体験ができます。さらに、AIの最先端技術を駆使して、よりリアルで鮮やかなビジュアルを実現。訪問者の皆さんには、写真作品を新たな視点から楽しんでいただけます。ぜひ、このウェブサイトで、写真という新しい世界を体験してみてくださいね！
+        </div><br><br>
+        <div>Information space photographic work</div><br><br><br>
+        <div class="links">
+            <div class="link-card"><a href="https://yosuke4061.github.io/midori_photo_art/midori01/index.html">神器光筆　夜桜</a></div>
+            <div class="link-card"><a href="https://yosuke4061.github.io/midori_photo_art/midori02/index.html">結　星宙</a></div>
+            <div class="link-card"><a href="https://yosuke4061.github.io/midori_photo_art/midori03/index.html">トビラ　赤</a></div>
+            <div class="link-card"><a href="https://yosuke4061.github.io/midori_photo_art/midori05/index.html">トビラ　青</a></div>
+        </div><br><br>
+        <div class="header">3D Lab</div>
+        <div class="special-links">
+            <div class="special-link-card"><a href="https://yosuke4061.github.io/midori_photo_art/midori04/midori_photo_art_040.html">円形の中の写真</a></div>
+            <div class="special-link-card"><a href="https://yosuke4061.github.io/midori_photo_art/midori06/index.html">炎の雰囲気を計算で描く</a></div>
+        </div>
+        <div>閲覧する環境によって、動作に遅れが生じます。特に画像の読み込みに時間がかかる場合があります。</div>
+    </div>
+</body>
+</html>
