@@ -17,6 +17,31 @@
             align-items: center;
             height: 100vh;
         }
+        .privacy-link {
+            position: relative;
+            display: inline-block;
+            border-bottom: 1px dotted black; /* Optional: adds underline to indicate hoverable */
+        }
+
+        .privacy-policy {
+            visibility: hidden;
+            width: 300px;
+            background-color: #f9f9f9;
+            color: #000;
+            text-align: left;
+            border-radius: 6px;
+            padding: 15px;
+            position: absolute;
+            z-index: 1;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -150px; /* Adjusts the position of the tooltip */
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        }
+
+        .privacy-link:hover .privacy-policy {
+            visibility: visible;
+        }
         .container {
             text-align: center;
             width: 90%;
@@ -90,16 +115,18 @@
         </div><br><br>
         <div>閲覧する環境によって、動作に遅れが生じます。特に画像の読み込みに時間がかかる場合があります。</div><br><br>
         <a href="https://twitter.com/leg4869" target="_blank">問い合わせはこちらX（旧Twitter）</a><br><br>
-        <div class="description">
-    <h2>プライバシーポリシー</h2>
-    <p>当サイトでは、ユーザーのプライバシー保護を重視しています。<br>個人情報の収集は、主にお問い合わせ時に限られ、X（旧ツイッター）になります。<br>その情報は以下の目的でのみ使用されます：</p>
-     <ul>
-        〇ユーザーからの問い合わせに対する回答<br>
-        〇当サイトの利用状況の分析と改善<br>
-    </ul>
-    <p>収集した情報は第三者に販売、共有、公開されることはありません。ただし、法律に基づく要求がある場合を除きます。</p>
-    <p>本ポリシーの内容は、予告なく変更されることがあります。変更後のポリシーについては、本サイトに掲載されたものをご確認ください。</p>
-</div>
+        <div class="privacy-link">プライバシーポリシー
+            <div class="privacy-policy">
+                <h2>プライバシーポリシー</h2>
+                <p>当サイトでは、ユーザーのプライバシー保護を重視しています。個人情報の収集は、お問い合わせ時に限られ、その情報は以下の目的でのみ使用されます：</p>
+                <ul>
+                    <li>ユーザーからの問い合わせに対する回答</li>
+                    <li>当サイトの利用状況の分析と改善</li>
+                </ul>
+                <p>収集した情報は第三者に販売、共有、公開されることはありません。ただし、法律に基づく要求がある場合を除きます。</p>
+                <p>本ポリシーの内容は、予告なく変更されることがあります。変更後のポリシーについては、本サイトに掲載されたものをご確認ください。</p>
+            </div>
+        </div>
     </div>
 </body>
 </html>
