@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>3D Visualization</title>
+    <style>
+        body { margin: 0; }
+        #topBar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: gray;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        #debugInfo {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: white;
+        }
+        #startButton {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="topBar">
+
+		MidoriPhotArt.<BR>
+            オブジェクト移動の残像表現　ブラー効果の実現
+    </div>
+    <button id="startButton">View</button> <BR>
+
+    <div id="debugInfo">Debug Info</div><br>
+
+    <script src="https://unpkg.com/three@0.147.0/build/three.min.js"></script>
+    <script src="https://unpkg.com/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
+
+    <script src="https://unpkg.com/three@0.147.0/examples/js/controls/DragControls.js"></script>
+
+    <script src="app.js"></script>
+</body>
+</html>

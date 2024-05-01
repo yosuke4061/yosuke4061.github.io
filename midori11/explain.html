@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Flat Spiral Rotation Effect 説明</title>
+</head>
+<body>
+    <h1>Flat Spiral Rotation Effect 関数の説明</h1>
+    <p>この関数は、立方体をスパイラル状に動かしながら、それぞれの立方体にトレイル（軌跡）を追加するアニメーション効果を作成します。</p>
+
+    <h2>立方体の生成</h2>
+    <p>最初に、150個の立方体を生成し、それぞれにランダムな色と透明度を設定します。各立方体は、ランダムな初期角度、速度、半径、Z軸速度、最大高さ、および上昇または下降の方向を持ちます。</p>
+    <pre><code>
+    let cubes = [];
+    let maxTrailCount = 50; // 各立方体のトレイルの最大数
+    let maxHeight = 10; // Z軸の最大高さ
+
+    for (let i = 0; i < 150; i++) {
+        const cubeGeometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
+        const cubeMaterial = new THREE.MeshBasicMaterial({ color: Math.random() * 0xffffff, transparent: true, opacity: 1.0 });
+        const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+        scene.add(cube);
+
+        cubes.push({
+            cube: cube,
+            angle: Math.random() * Math.PI * 2,
+            speed: 0.01 + Math.random() * 0.02,
+            radius: 2 + Math.random() * 3,
+            zSpeed: 0.05 + Math.random() * 0.05,
+            maxHeight: maxHeight,
+            direction: Math.random() < 0.5 ? 1 : -1, // ランダムに上または下
+            trail: []
+        });
+    }
+    </code></pre>
+
+    <h2>立方体の位置更新</h2>
+    <p>次に、各フレームで立方体の位置を更新します。立方体はスパイラル状に動き、Z軸方向にも動きます。Z軸の位置が最大または最小に達すると、方向が反転します。</p>
+    <pre><code>
+    function updateCubePositions() {
+        cubes.forEach((obj, index) => {
+            obj.angle += obj.speed;
+            obj.cube.position.x = obj.radius * Math.cos(obj.angle);
+            obj.cube.position.y = obj.radius * Math.sin(obj.angle);
+
+            if (obj.cube.position.z >= obj.maxHeight || obj.cube.position.z <= 0) {
+                obj.direction *= -1; // 方向転換
+            }
+            obj.cube.position.z += obj.zSpeed * obj.direction;
+        });
+    }
+    </code></pre>
+
+    <h2>トレイルの追加と管理</h2>
+    <p>各立方体にはトレイルが追加され、トレイルの透明度は時間とともに減少します。トレイルの数が最大数を超えると、古いトレイルが削除されます。</p>
+    <pre><code>
+    function updateCubePositions() {
+        cubes.forEach((obj, index) => {
+            let trailCube = obj.cube.clone();
+            trailCube.material = obj.cube.material.clone();
+            trailCube.material.opacity = 0.5; // 初期の透明度
+            scene.add(trailCube);
+            obj.trail.push(trailCube);
+
+            if (obj.trail.length > maxTrailCount) {
+                let oldTrail = obj.trail.shift();
+                scene.remove(oldTrail);
+            }
+
+            obj.trail.forEach(t => {
+                t.material.opacity *= 0.95; // 透明度を徐々に下げる
+            });
+        });
+    }
+        </code></pre>
+
+    <h2>アニメーションの更新</h2>
+    <p>最後に、<code>updateCubePositions</code> 関数をシーンの更新関数リストに追加します。これにより、シーンが描画されるたびに立方体の位置とトレイルが更新されます。</p>
+    <pre><code>
+    shapes.push({ update: updateCubePositions }); // 更新関数を形状配列に追加
+    </code></pre>
+
+</body>
+</html>
