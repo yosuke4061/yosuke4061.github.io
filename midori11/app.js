@@ -37,62 +37,42 @@ function init() {
 }
 
 function addFlatSpiralRotationEffect() {
-    let cubes = [];
-    let maxTrailCount = 50; // 各立方体のトレイルの最大数
-    let maxHeight = 10; // Z軸の最大高さ
+    const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
+    const cubeMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, transparent: true, opacity: 1.0 });
+    const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+    scene.add(cube);
 
-    // 立方体を20個生成し、それぞれ異なる初期設定を行う
-    for (let i = 0; i < 150; i++) {
-        const cubeGeometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
-        const cubeMaterial = new THREE.MeshBasicMaterial({ color: Math.random() * 0xffffff, transparent: true, opacity: 1.0 });
-        const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-        scene.add(cube);
+    let angle = 0;
+    let radius = 5;
+    let trail = []; // トレイルを格納する配列
+    let maxTrailCount = 100; // トレイルの最大数
 
-        cubes.push({
-            cube: cube,
-            angle: Math.random() * Math.PI * 2,
-            speed: 0.01 + Math.random() * 0.02,
-            radius: 2 + Math.random() * 3,
-            zSpeed: 0.05 + Math.random() * 0.05,
-            maxHeight: maxHeight,
-            direction: Math.random() < 0.5 ? 1 : -1, // ランダムに上または下
-            trail: []
+    function updateCubePosition() {
+        angle += 0.02;
+        cube.position.x = radius * Math.cos(angle);
+        cube.position.y = radius * Math.sin(angle);
+        cube.position.z = 0;
+
+        // 立方体のコピーを作成してトレイルとして追加
+        let trailCube = cube.clone();
+        trailCube.material = cube.material.clone();
+        trailCube.material.opacity = 0.5; // 初期の透明度
+        scene.add(trailCube);
+        trail.push(trailCube);
+
+        // トレイルの数が最大数を超えたら古いものから削除
+        if (trail.length > maxTrailCount) {
+            let oldTrail = trail.shift();
+            scene.remove(oldTrail);
+        }
+
+        // トレイルの透明度を更新
+        trail.forEach(t => {
+            t.material.opacity *= 0.95; // 透明度を徐々に下げる
         });
     }
 
-    function updateCubePositions() {
-        cubes.forEach((obj, index) => {
-            obj.angle += obj.speed;
-            obj.cube.position.x = obj.radius * Math.cos(obj.angle);
-            obj.cube.position.y = obj.radius * Math.sin(obj.angle);
-
-            // Z軸の更新
-            if (obj.cube.position.z >= obj.maxHeight || obj.cube.position.z <= 0) {
-                obj.direction *= -1; // 方向転換
-            }
-            obj.cube.position.z += obj.zSpeed * obj.direction;
-
-            // トレイルの追加
-            let trailCube = obj.cube.clone();
-            trailCube.material = obj.cube.material.clone();
-            trailCube.material.opacity = 0.5; // 初期の透明度
-            scene.add(trailCube);
-            obj.trail.push(trailCube);
-
-            // トレイルの数が最大数を超えたら古いものから削除
-            if (obj.trail.length > maxTrailCount) {
-                let oldTrail = obj.trail.shift();
-                scene.remove(oldTrail);
-            }
-
-            // トレイルの透明度を更新
-            obj.trail.forEach(t => {
-                t.material.opacity *= 0.95; // 透明度を徐々に下げる
-            });
-        });
-    }
-
-    shapes.push({ update: updateCubePositions }); // 更新関数を形状配列に追加
+    shapes.push({ update: updateCubePosition }); // 更新関数を形状配列に追加
 }
 
 function setupControls() {
