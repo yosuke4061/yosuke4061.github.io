@@ -89,6 +89,7 @@
         @media (max-width: 600px) {
             body {
                 padding: 20px; /* 画面の端に余白を追加 */
+                flex-direction: column; /* スタック要素を垂直に配置 */
             }
             .container {
                 width: 100%; /* コンテナの幅を画面幅に合わせる */
@@ -97,14 +98,17 @@
                 font-size: 1.2em; /* リンクのフォントサイズを大きくしてタップしやすくする */
             }
             .header {
-                font-size: 2em;
+                font-size: 2em; /* ヘッダーのフォントサイズを調整 */
             }
             .link-card, .special-link-card {
-                padding: 20px;
+                padding: 20px; /* カードのパディングを調整 */
+            }
+            .links, .special-links {
+                grid-template-columns: 1fr; /* グリッドの列を1列に設定 */
             }
         }
 
-    </style>
+</style>    
 </head>
 <body>
     <div class="container">
