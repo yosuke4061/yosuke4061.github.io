@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>スモークエフェクトの解説</title>
+</head>
+<body>
+    <h1>スモークエフェクトの関数解説</h1>
+    <p>この関数は、Three.jsを使用して、3D空間にスモークエフェクトを作成します。</p>
+
+    <h2>関数の概要</h2>
+    <p><code>addEnhancedSmokeEffect</code> 関数は、10000個のパーティクルを生成し、それぞれにランダムな位置と色を設定して、シーンに追加します。</p>
+
+    <h2>コードの詳細</h2>
+    <h3>パーティクルの設定</h3>
+    <pre><code>
+    const particles = 10000; // パーティクルの数を設定
+    </code></pre>
+    <p>パーティクルの総数を10000個に設定します。</p>
+
+    <h3>ジオメトリと属性の設定</h3>
+    <pre><code>
+    const geometry = new THREE.BufferGeometry();
+    const positions = [];
+    const colors = [];
+    const color = new THREE.Color();
+    </code></pre>
+    <p>新しいバッファジオメトリを作成し、位置と色の配列を初期化します。</p>
+
+    <h3>パーティクルの位置と色の設定</h3>
+    <pre><code>
+    for (let i = 0; i < particles; i++) {
+        const x = Math.random() * 2000 - 1000;
+        const y = Math.random() * 2000 - 1000;
+        const z = Math.random() * 2000 - 1000;
+        positions.push(x, y, z);
+
+        color.setRGB(Math.random(), Math.random(), Math.random());
+        colors.push(color.r, color.g, color.b);
+    }
+    </code></pre>
+    <p>各パーティクルに対して、ランダムな位置とランダムな色を設定します。</p>
+
+    <h3>ジオメトリへの属性の追加</h3>
+    <pre><code>
+    geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+    geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+    </code></pre>
+    <p>位置と色のデータをジオメトリの属性として追加します。</p>
+
+    <h3>マテリアルとポイントの作成</h3>
+    <pre><code>
+    const material = new THREE.PointsMaterial({
+        size: 1.5,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.5,
+        sizeAttenuation: true
+    });
+
+    const points = new THREE.Points(geometry, material);
+    </code></pre>
+    <p>ポイントマテリアルを作成し、透明度や色の頂点を使用する設定を行います。そして、このマテリアルを使用してポイントを作成します。</p>
+
+    <h3>シーンへの追加</h3>
+    <pre><code>
+    scene.add(points);
+    </code></pre>
+    <p>作成したポイントをシーンに追加します。</p>
+</body>
+</html>
