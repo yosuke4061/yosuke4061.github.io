@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3D空間におけるクジラの曲線生成プログラム</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    margin: 0;
+    background-color: #f4f4f9;
+  }
+  .container {
+    max-width: 800px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  h1 {
+    color: #333;
+  }
+  p {
+    color: #666;
+  }
+  code {
+    background-color: #eee;
+    padding: 5px;
+    display: block;
+    white-space: pre-wrap;
+    margin-top: 5px;
+  }
+  @media (max-width: 600px) {
+    .container {
+      width: 100%;
+      padding: 10px;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>3D空間におけるクジラを表現する曲線生成プログラムの詳細解説</h1>
+  <p>このブログ記事では、JavaScriptを用いて3D空間におけるクジラを表現する曲線生成プログラムの詳細解説を行います。このプログラムは、XYZ形式の点群データを読み込み、Catmull-Rom曲線を用いて滑らかな曲線を生成し、クジラの形を表現します。さらに、追加の線を追加することで、クジラの細部表現を強化します。</p>
+  <h2>プログラム概要</h2>
+  <p>プログラムは、以下の3つの主要な機能で構成されています。</p>
+  <ul>
+    <li>点群データの読み込み: THREE.FileLoaderを使用して、XYZ形式の点群データをファイルから読み込みます。</li>
+    <li>滑らかな曲線の生成: 読み込んだ点群データを用いて、Catmull-Rom曲線と呼ばれる滑らかな曲線を生成します。</li>
+    <li>クジラ形状の表現: 生成した曲線を元に、クジラの形状を表現する線オブジェクトを作成します。</li>
+  </ul>
+  <h2>プログラム詳細</h2>
+  <h3>1. 点群データの読み込み</h3>
+  <code>const loader = new THREE.FileLoader();
+loader.load('file.xyz', function(data) {
+  // ...
+});</code>
+  <h3>2. 滑らかな曲線の生成</h3>
+  <code>const points = [];
+const lines = data.split('\n');
+for (let i = 0; i < lines.length; i++) {
+  const parts = lines[i].trim().split(' ');
+  if (parts.length === 3) {
+    const x = parseFloat(parts[0]);
+    const y = parseFloat(parts[1]);
+    const z = parseFloat(parts[2]);
+    points.push(new THREE.Vector3(x, y, z));
+  }
+}
+const curve = new THREE.CatmullRomCurve3(points);
+const pointsSmooth = curve.getPoints(200);
+const geometry = new THREE.BufferGeometry().setFromPoints(pointsSmooth);</code>
+<h3>3. クジラ形状の表現</h3>
+<code>const material = new THREE.LineBasicMaterial({ color: 0x0000ff });
+const curveObject = new THREE.Line(geometry, material);
+scene.add(curveObject);</code>
+<h3>追加の線</h3>
+<code>const additionalLinesMaterial = new THREE.LineBasicMaterial({ color: 0x00ff00 });
+for (let i = 0; i < points.length; i += 5) {
+const segmentGeometry = new THREE.BufferGeometry();
+const segmentPoints = [];
+segmentPoints.push(points[i]);
+if (points[i + 5]) {
+  segmentPoints.push(points[i + 5]);
+} else {
+  segmentPoints.push(points[0]);
+}
+segmentGeometry.setFromPoints(segmentPoints);
+const line = new THREE.Line(segmentGeometry, additionalLinesMaterial);
+scene.add(line);
+}</code>
+<h2>まとめ</h2>
+<p>このブログ記事では、JavaScriptを用いて3D空間におけるクジラを表現する曲線生成プログラムの詳細解説を行いました。このプログラムは、Catmull-Rom曲線を用いて滑らかな曲線を生成し、さらに追加の線を追加することで、クジラの形状をリアルに表現することができます。</p>
+<p>このプログラムを参考に、3D空間における様々な形状を表現するプログラムを作成することができます。</p>
+<h2>補足</h2>
+<p>このプログラムはあくまでも一例であり、より複雑な形状を表現するには、プログラムを改良する必要があります。Catmull-Rom曲線以外にも、様々な曲線生成アルゴリズムが存在します。3Dモデルを可視化するには、Three.jsなどのライブラリを使用する必要があります。</p>
+</div>
+</body>
+</html>
