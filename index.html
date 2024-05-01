@@ -85,14 +85,26 @@
         a:hover {
             color: #81C784;
         }
+
         @media (max-width: 600px) {
             .header {
-                font-size: 2em;
+                font-size: 1.5em; /* より小さいフォントサイズ */
             }
             .link-card, .special-link-card {
-                padding: 20px;
+                padding: 15px; /* より少ないパディング */
+            }
+            .description {
+                font-size: 0.8em; /* 説明文のフォントサイズを調整 */
+            }
+            .privacy-policy {
+                width: 90%; /* ツールチップの幅を調整 */
+                margin-left: -45%; /* ツールチップの位置を調整 */
+            }
+            .links, .special-links {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* グリッドのカラムサイズを調整 */
             }
         }
+
     </style>
 </head>
 <body>
