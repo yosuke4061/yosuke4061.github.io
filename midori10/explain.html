@@ -5,6 +5,15 @@
     <title>SuperShape3D 関数の解説</title>
 </head>
 <body>
+    <div id="topBar">
+    <button id="backButton" style="position: absolute; top: 10px; left: 10px; background-color: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">閉じる</button>
+SuperShape3D 関数の解説
+</div>
+<script>
+    document.getElementById('backButton').addEventListener('click', function() {
+        window.close();
+    });
+</script>
     <h1>SuperShape3D 関数の解説</h1>
     <p>この関数は、THREE.js ライブラリを使用して、特定の数学的パラメータに基づいて3D形状を生成し、それらをシーンに追加します。</p>
 
