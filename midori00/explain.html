@@ -5,6 +5,16 @@
     <title>空間の設計　コード解説</title>
 </head>
 <body>
+    <div id="topBar">
+        <button id="backButton" style="position: absolute; top: 10px; left: 10px; background-color: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">閉じる</button>
+        MidoriPhotArt.<br>
+        空間の設計　　コード解説
+    </div>
+    <script>
+        document.getElementById('backButton').addEventListener('click', function() {
+            window.close();
+        });
+    </script>
     <h1>空間の設計　コード解説</h1>
     <p>このJavaScriptコードは、Three.jsを使用して3Dシーンを作成し、操作するためのものです。以下に主要な機能とその説明を示します。</p>
     <h2>init関数</h2>
