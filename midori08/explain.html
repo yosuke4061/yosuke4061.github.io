@@ -7,6 +7,17 @@
         　詳細解説</title>
 </head>
 <body>
+    <div id="topBar">
+    <button id="backButton" style="position: absolute; top: 10px; left: 10px; background-color: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">閉じる</button>
+    点群データの線形表現 動的　クジラ　
+        ランダムに散らばった点群が徐々にクジラの形になるプログラム　
+        　詳細解説
+</div>
+<script>
+    document.getElementById('backButton').addEventListener('click', function() {
+        window.close();
+    });
+</script>
     <h1>点群データの線形表現 動的　クジラ
         ランダムに散らばった点群が徐々にクジラの形になるプログラム</h1>
     <p>このページでは、JavaScript関数 <code>createWhaleShape</code> の詳細な動作と、Three.jsを使用した3Dグラフィックスの生成について説明します。</p>
