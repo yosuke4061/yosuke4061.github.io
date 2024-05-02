@@ -5,6 +5,16 @@
     <title>スモークエフェクトの解説</title>
 </head>
 <body>
+
+    <div id="topBar">
+    <button id="backButton" style="position: absolute; top: 10px; left: 10px; background-color: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">閉じる</button>
+スモークエフェクトの解説
+</div>
+<script>
+    document.getElementById('backButton').addEventListener('click', function() {
+        window.close();
+    });
+</script>
     <h1>スモークエフェクトの関数解説</h1>
     <p>この関数は、Three.jsを使用して、3D空間にスモークエフェクトを作成します。</p>
 
