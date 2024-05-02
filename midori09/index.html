@@ -41,7 +41,18 @@
 
 		MidoriPhotArt.<BR>
         宇宙空間の星々の背景表現
-    </div>
+
+    <button id="backButton" style="position: absolute; top: 10px; left: 10px; background-color: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">閉じる</button>
+
+</div>
+<script>
+    document.getElementById('backButton').addEventListener('click', function() {
+        window.close();
+    });
+</script>
+
+
+	
     <button id="startButton">View</button> <BR>
 
     <div id="debugInfo">Debug Info</div><br>
