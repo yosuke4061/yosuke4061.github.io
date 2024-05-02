@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>3D&WEB&Photo Midori Photo Art.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: #fff;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding-top: 140px; /* Adjusted padding to accommodate fixed header and nav-bar */
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+        }
+        .header {
+            font-size: 2.5em;
+            margin: 0; /* Removed top and bottom margins */
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            position: fixed; /* Fixed position */
+            width: 100%; /* Full width */
+            top: 0; /* Positioned at the top */
+            background: #fff; /* Background color set to white */
+            z-index: 10; /* Higher z-index to keep it on top */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Added shadow for depth */
+        }
+        .description, .footer-content {
+            font-size: 1em;
+            line-height: 1.6;
+            color: #666;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .nav-bar {
+            width: 100%;
+            background: #333;
+            color: #fff;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            position: fixed; /* Fixed position */
+            top: 60px; /* Positioned below the header */
+            z-index: 10; /* Higher z-index to keep it on top */
+            justify-content: flex-start; /* 左寄せに変更してみる */
+            padding-left: 0; /* 左側のパディングを調整 */
+
+        }
+        .nav-item {
+            text-decoration: none;
+            color: #fff;
+            font-size: 1.2em;
+            transition: color 0.3s, transform 0.3s;
+            margin-right: 40px; /* 各アイテムの右マージンを設定 */
+
+        }
+        .nav-item:hover {
+            color: #81C784;
+            transform: scale(1.1);
+        }
+
+        .footer-link {
+            color: #4CAF50;
+            cursor: pointer;
+            font-size: 0.8em; /* 小さい文字サイズ */
+            position: relative; /* ポジショニングの基準点 */
+        }
+        .footer-content, .contact-content {
+            display: none;
+            position: absolute; /* 絶対位置指定 */
+            background: #f0f0f0; /* 背景色 */
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            width: 300px; /* 幅指定 */
+            left: 50%;
+            transform: translateX(-50%); /* 中央寄せ */
+        }
+        .footer-link:hover .footer-content, .footer-link:focus .footer-content {
+            display: block; /* ホバーまたはフォーカスで表示 */
+        }
+        @media (max-width: 600px) {
+            .header, .footer-link {
+                font-size: 2em;
+            }
+            .nav-item {
+                font-size: 1em;
+
+            }
+        }
+        .content-item {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .content-item h3 {
+            color: #333;
+            font-size: 1.2em;
+        }
+
+        .content-item p {
+            color: #666;
+            font-size: 1em;
+            margin: 5px 0;
+        }
+
+        .content-item a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        .content-item a:hover {
+            text-decoration: underline;
+        }        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">3D&WEB&Photo Midori Photo Art.</div>
+        <div class="nav-bar">
+            <a href="#" class="nav-item" onclick="loadContent('情報空間写真作品')">情報空間写真作品</a>
+            <a href="#" class="nav-item" onclick="loadContent('開発室')">開発室</a>
+            <a href="#" class="nav-item" onclick="loadContent('脱線')">脱線</a>
+        </div>
+        <br><br>
+        <div class="content">
+            <div class="footer-link" tabindex="0" onclick="toggleContent(this)">
+                <a href="javascript:void(0);">「紡ぐ」 まったく新しい未来の形へ　挑戦　詳しくはこちらへ</a>
+                <div class="footer-content" style="display: none;">
+                    <h1>一枚の写真が織りなす新たな世界へようこそ</h1>
+                    <p>WebGL&Three.jsを駆使した3D空間で、作品を展示し、その制作過程や思想を解説。3D技術習得の覚書も公開することで、有益な情報を発信していきます。</p>
+                    <h2>このサイトでは、</h2>
+                    <ul>
+                        <li><strong>作品展示:</strong> WebGL&Three.jsで制作した作品を3D空間で展示します。</li>
+                        <li><strong>技術解説:</strong> 作品制作に用いた技術や思想を詳しく解説します。</li>
+                        <li><strong>3D技術習得:</strong> 3D技術習得のための覚書を公開することで、学びの場を提供します。</li>
+                        <li><strong>写真表現の挑戦:</strong> 一枚の写真を情報空間に飾ることで、今までにない写真表現を実現します。</li>
+                    </ul>
+                    <p>訪れる皆様に、</p>
+                    <ul>
+                        <li>新たなインスピレーション</li>
+                        <li>3D技術への理解</li>
+                        <li>写真表現の可能性</li>
+                    </ul>
+                    <p>をお届けできれば幸いです。</p>
+                </div>
+            </div>  
+        </div>
+        <br><br>
+        <div id="content-display"></div>
+
+
+
+        <br><br>
+        <div class="footer-link" tabindex="0" onclick="toggleContent(this)">作者について
+            
+            <div class="footer-content" style="display: none;">作者：Midori Photo Art.<br>東京都内　男性　展示をしたり、無名なアーティスト活動をしています。</div>
+        </div>
+        <div class="footer-link" tabindex="0" onclick="toggleContent(this)">プライバシーポリシー
+            <div class="footer-content" style="display: none;">
+                <div class="privacy-policy">
+                    <h1>プライバシーポリシー</h1>
+                    <p>本ウェブサイト（以下、「当サイト」とします）をご利用いただく際には、以下の事項をご理解いただいた上でご利用ください。</p>
+                    
+                    <h2>1. 個人情報の収集</h2>
+                    <p>当サイトでは、以下の場合に個人情報を収集いたします。</p>
+                    <ul>
+                        <li>外部SNSサービス（例：Twitter、Facebook）を通じてお問い合わせいただいた場合</li>
+                        <li>当サイトのコメント欄に投稿いただいた場合</li>
+                        <li>アフィリエイト広告プログラムへの登録・利用の場合</li>
+                    </ul>
+                    
+                    <h2>2. 個人情報の利用目的</h2>
+                    <p>収集した個人情報は、以下の目的で使用いたします。</p>
+                    <ul>
+                        <li>お問い合わせに対する回答</li>
+                        <li>コメントへの返信</li>
+                        <li>アフィリエイト広告プログラムの運営</li>
+                        <li>当サイトの利用状況の分析と改善</li>
+                    </ul>
+                    
+                    <h2>3. 個人情報の第三者提供</h2>
+                    <p>当サイトは、収集した個人情報を、法令に基づく開示請求があった場合を除き、第三者に提供することはありません。</p>
+                    <p>ただし、アフィリエイト広告プログラムの運営に必要な範囲で、第三者に個人情報を提供することがあります。この場合、当サイトは、提供する第三者に対して、個人情報の取り扱いを厳重に管理することを義務付けます。</p>
+                    
+                    <h2>4. Cookieの使用</h2>
+                    <p>当サイトは、Cookieと呼ばれる技術を使用して、ユーザーのアクセス履歴などを収集しています。Cookieは、ユーザーの利便性を向上させるために使用しており、個人を特定するものではありません。</p>
+                    <p>ユーザーは、ブラウザの設定を変更することで、Cookieの受け取りを拒否することができます。ただし、Cookieを拒否した場合、当サイトの一部機能が利用できなくなる可能性があります。</p>
+                    <p>また、アフィリエイト広告プログラムによっては、Cookieを使用してユーザーの行動を追跡し、より適切な広告を配信する場合があります。</p>
+                    
+                    <h2>5. セキュリティ対策</h2>
+                    <p>当サイトは、個人情報の漏洩、滅失、改ざん等を防止するために、必要かつ適切なセキュリティ対策を講じております。</p>
+                    
+                    <h2>6. プライバシーポリシーの変更</h2>
+                    <p>本プライバシーポリシーは、予告なく変更されることがあります。変更後のプライバシーポリシーについては、本サイトに掲載されたものをご確認ください。</p>
+                    <h2>7. お問い合わせ</h2>
+                    <p>本プライバシーポリシーに関するご質問やご意見がありましたら、<a href="https://twitter.com/leg4869" target="blank">@leg4869</a>までお気軽にご連絡ください。</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer-link" tabindex="0" onclick="toggleContent(this)">免責事項
+            <div class="footer-content" style="display: none;">
+                <div class="disclaimer">
+                <h2>免責事項</h2>
+                <p>本ウェブサイト（以下、「当サイト」とします）をご利用いただく際には、以下の事項をご理解いただいた上でご利用ください。</p>
+                <ol>
+                    <li><strong>情報の正確性</strong><br>
+                    当サイトの情報はできる限り正確なものを提供するよう努めておりますが、その正確性や完全性を保証するものではありません。また、情報の内容は予告なく変更される場合があります。<br>
+                    当サイトの情報に基づいて行われたいかなる行為の結果についても、一切の責任を負いません。</li>
+                    <li><strong>外部サイトへのリンク</strong><br>
+                    当サイトは、他のウェブサイトへのリンクを提供している場合があります。これらのリンク先のウェブサイトの内容やサービスについては、一切の責任を負いません。<br>
+                    リンク先のウェブサイトをご利用になる前に、各ウェブサイトの利用規約等をご確認ください。</li>
+                    <li><strong>サービスの中断・停止</strong><br>
+                    当サイトは、システムメンテナンスやその他の理由により、予告なくサービスを中断または停止することがあります。<br>
+                    サービスの中断・停止により生じた損害について、一切の責任を負いません。</li>
+                    <li><strong>3D処理による問題</strong><br>
+                    当サイトには高度な3D処理が含まれており、一部のデバイスで以下の問題が発生する場合があります。<br>
+                    パフォーマンスの低下<br>
+                    機器の誤作動<br>
+                    これらの問題が発生した場合でも、一切の責任を負いません。</li>
+                    <li><strong>著作権</strong><br>
+                    当サイトに掲載されているコンテンツの著作権は、当サイトまたはコンテンツ制作者に帰属します。<br>
+                    当サイトからのコンテンツの無断転載、改変、頒布等を禁止します。</li>
+                    <li><strong>準拠法令</strong><br>
+                    当サイトの利用に関する紛争は、日本国法に準拠するものとします。</li>
+                    <li><strong>免責事項の変更</strong><br>
+                    当サイトの免責事項は、予告なく変更される場合があります。<br>
+                    最新の情報については、定期的に本ページをご確認ください。</li>
+                </ol>
+                <p>その他<br>
+                上記以外にも、当サイトのご利用に関するご質問やご意見がありましたら、 X（旧Twitter）<a href="https://twitter.com/leg4869" target="_blank">@leg4869</a>までお気軽にご連絡ください。</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer-link" onclick="toggleContent(this)">問い合わせはこちらX（旧Twitter）
+            <div class="contact-content" style="display: none;">
+                お問い合わせはSNSにてお願いします。<br>
+                Udon Soba ：問い合わせ先 問い合わせは X（旧Twitter）<a href="https://twitter.com/leg4869" target="_blank">@leg4869</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        function toggleContent(element) {
+            var content = element.querySelector('.footer-content') || element.querySelector('.contact-content');
+            if (content.style.display === 'block') {
+                content.style.display = 'none';
+            } else {
+                content.style.display = 'block';
+            }
+        }
+        function toggleVisibility(id) {
+            var element = document.getElementById(id);
+            if (element.style.display === 'block') {
+                element.style.display = 'none';
+            } else {
+                element.style.display = 'block';
+            }
+        }        
+
+        async function loadContent(category) {
+            const response = await fetch('data.csv');
+            const data = await response.text();
+            const rows = data.split('\n').map(row => row.split(','));
+            const filteredData = rows.filter(row => row[0] === category);
+
+            const contentContainer = document.getElementById('content-display');
+            contentContainer.innerHTML = ''; // Clear previous content
+
+            filteredData.forEach(row => {
+                const div = document.createElement('div');
+                div.className = 'content-item';
+                div.innerHTML = `
+                    <h3>${row[0] || ''}</h3>
+                        <p><strong>File Address（コンテンツ）:</strong> ${row[1] ? `<a href="${row[1]}" target="_blank">${row[1]}</a>` : ''}</p>
+                        <p><strong>Date（日付）:</strong> ${row[2] || ''}</p>
+                        <p><strong>Details（題名）:</strong> ${row[3] || ''}</p>
+                        <p><strong>Explain（解説）:</strong> ${row[4] ? `<a href="${row[4]}" target="_blank">${row[4]}</a>` : ''}</p>
+                    `;
+                contentContainer.appendChild(div);
+            });
+        }
+        //window.onload = function() {
+        //  loadInitialContent();
+        //};        
+        document.addEventListener('DOMContentLoaded', function() {
+             loadInitialContent();
+         });
+
+        async function loadInitialContent() {
+            const response = await fetch('data.csv');
+            const data = await response.text();
+            const rows = data.split('\n').map(row => row.split(','));
+
+            // ヘッダー行を除外し、日付でソート（新しい順）
+            //rows.shift(); // ヘッダー行を削除
+            rows.sort((a, b) => new Date(b[2]) - new Date(a[2])); // 日付で降順ソート
+
+            const contentContainer = document.getElementById('content-display');
+            contentContainer.innerHTML = ''; // 既存のコンテンツをクリア
+
+            // 最初の9件のみを取得して表示
+            rows.slice(0, 9).forEach(row => {
+                const div = document.createElement('div');
+                div.className = 'content-item';
+                div.innerHTML = `
+                    <h3>${row[0] || ''}</h3>
+                    <p><strong>File Address（コンテンツ）:</strong> ${row[1] ? `<a href="${row[1]}" target="_blank">${row[1]}</a>` : ''}</p>
+                    <p><strong>Date（日付）:</strong> ${row[2] || ''}</p>
+                    <p><strong>Details（題名）:</strong> ${row[3] || ''}</p>
+                    <p><strong>Explain（解説）:</strong> ${row[4] ? `<a href="${row[4]}" target="_blank">${row[4]}</a>` : ''}</p>
+                `;
+                contentContainer.appendChild(div);
+            });
+        } 
+    </script>
+</body>
+</html>
