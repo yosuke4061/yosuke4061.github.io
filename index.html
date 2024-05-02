@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4256337388599252"
-     crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <title>3D&WEB&Photo Midori Photo Art.</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
@@ -131,15 +129,9 @@
 <body>
     <div class="container">
         <div class="header">3D&WEB&Photo Midori Photo Art.</div>
-        <div class="nav-bar">
-            <a href="#" class="nav-item" onclick="loadContent('情報空間写真作品')">情報空間写真作品</a>
-            <a href="#" class="nav-item" onclick="loadContent('開発室')">開発室</a>
-            <a href="#" class="nav-item" onclick="loadContent('脱線')">脱線</a>
-        </div>
-        <br><br>
         <div class="content">
             <div class="footer-link" tabindex="0" onclick="toggleContent(this)">
-                <a href="javascript:void(0);">「紡ぐ」 まったく新しい未来の形へ　挑戦　詳しくはこちらへ</a>
+                <a href="javascript:void(0);">「紡ぐ」 まったく新しい未来の形へ　挑戦　このサイトの詳細はこちらへ</a>
                 <div class="footer-content" style="display: none;">
                     <h1>一枚の写真が織りなす新たな世界へようこそ</h1>
                     <p>WebGL&Three.jsを駆使した3D空間で、作品を展示し、その制作過程や思想を解説。3D技術習得の覚書も公開することで、有益な情報を発信していきます。</p>
@@ -160,28 +152,34 @@
                 </div>
             </div>  
         </div>
+        <div class="nav-bar">
+            <a href="#" class="nav-item" onclick="loadInitialContent()">全て表示</a>
+            <a href="#" class="nav-item" onclick="loadContent('情報空間写真作品')">情報空間写真作品</a>
+            <a href="#" class="nav-item" onclick="loadContent('開発室')">開発室</a>
+            <a href="#" class="nav-item" onclick="loadContent('脱線')">脱線</a>
+        </div>
         <br><br>
         <div id="content-display"></div>
 
 
 
         <br><br>
-        <div class="footer-link" tabindex="0" onclick="toggleContent(this)">作者について
-            
+        <div class="footer-link" tabindex="0" onclick="toggleContent(this)">作者について    
             <div class="footer-content" style="display: none;">作者：Midori Photo Art.<br>東京都内　男性　展示をしたり、無名なアーティスト活動をしています。</div>
         </div>
+        <br><br>
         <div class="footer-link" tabindex="0" onclick="toggleContent(this)">プライバシーポリシー
             <div class="footer-content" style="display: none;">
                 <div class="privacy-policy">
-                    <h1>プライバシーポリシー</h1>
+                    <h1>プライバシーポリシー</h1><p>２０２４年５月１日策定</p>
                     <p>本ウェブサイト（以下、「当サイト」とします）をご利用いただく際には、以下の事項をご理解いただいた上でご利用ください。</p>
                     
                     <h2>1. 個人情報の収集</h2>
                     <p>当サイトでは、以下の場合に個人情報を収集いたします。</p>
                     <ul>
-                        <li>外部SNSサービス（例：Twitter、Facebook）を通じてお問い合わせいただいた場合</li>
+                        <li>外部SNSサービス（例：X（旧Twitter）を通じてお問い合わせいただいた場合</li>
                         <li>当サイトのコメント欄に投稿いただいた場合</li>
-                        <li>アフィリエイト広告プログラムへの登録・利用の場合</li>
+                        <li>アフィリエイトなどの広告プログラムへの登録・利用の場合</li>
                     </ul>
                     
                     <h2>2. 個人情報の利用目的</h2>
@@ -189,18 +187,18 @@
                     <ul>
                         <li>お問い合わせに対する回答</li>
                         <li>コメントへの返信</li>
-                        <li>アフィリエイト広告プログラムの運営</li>
+                        <li>アフィリエイトなどの広告プログラムの運営</li>
                         <li>当サイトの利用状況の分析と改善</li>
                     </ul>
                     
                     <h2>3. 個人情報の第三者提供</h2>
                     <p>当サイトは、収集した個人情報を、法令に基づく開示請求があった場合を除き、第三者に提供することはありません。</p>
-                    <p>ただし、アフィリエイト広告プログラムの運営に必要な範囲で、第三者に個人情報を提供することがあります。この場合、当サイトは、提供する第三者に対して、個人情報の取り扱いを厳重に管理することを義務付けます。</p>
+                    <p>ただし、アフィリエイトなどの広告プログラムの運営に必要な範囲で、第三者に個人情報を提供することがあります。この場合、当サイトは、提供する第三者に対して、個人情報の取り扱いを厳重に管理することを義務付けます。</p>
                     
                     <h2>4. Cookieの使用</h2>
                     <p>当サイトは、Cookieと呼ばれる技術を使用して、ユーザーのアクセス履歴などを収集しています。Cookieは、ユーザーの利便性を向上させるために使用しており、個人を特定するものではありません。</p>
                     <p>ユーザーは、ブラウザの設定を変更することで、Cookieの受け取りを拒否することができます。ただし、Cookieを拒否した場合、当サイトの一部機能が利用できなくなる可能性があります。</p>
-                    <p>また、アフィリエイト広告プログラムによっては、Cookieを使用してユーザーの行動を追跡し、より適切な広告を配信する場合があります。</p>
+                    <p>また、アフィリエイトなどの広告プログラムによっては、Cookieを使用してユーザーの行動を追跡し、より適切な広告を配信する場合があります。</p>
                     
                     <h2>5. セキュリティ対策</h2>
                     <p>当サイトは、個人情報の漏洩、滅失、改ざん等を防止するために、必要かつ適切なセキュリティ対策を講じております。</p>
@@ -212,10 +210,11 @@
                 </div>
             </div>
         </div>
+        <br><br>
         <div class="footer-link" tabindex="0" onclick="toggleContent(this)">免責事項
             <div class="footer-content" style="display: none;">
                 <div class="disclaimer">
-                <h2>免責事項</h2>
+                <h2>免責事項</h2><p>２０２４年５月１日策定</p>
                 <p>本ウェブサイト（以下、「当サイト」とします）をご利用いただく際には、以下の事項をご理解いただいた上でご利用ください。</p>
                 <ol>
                     <li><strong>情報の正確性</strong><br>
@@ -246,6 +245,7 @@
                 </div>
             </div>
         </div>
+        <br><br>
         <div class="footer-link" onclick="toggleContent(this)">問い合わせはこちらX（旧Twitter）
             <div class="contact-content" style="display: none;">
                 お問い合わせはSNSにてお願いします。<br>
@@ -253,6 +253,7 @@
             </div>
         </div>
     </div>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
     <script>
         function toggleContent(element) {
             var content = element.querySelector('.footer-content') || element.querySelector('.contact-content');
