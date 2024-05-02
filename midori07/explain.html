@@ -40,6 +40,16 @@
 </style>
 </head>
 <body>
+  <div id="topBar">
+    <button id="backButton" style="position: absolute; top: 10px; left: 10px; background-color: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">閉じる</button>
+    MidoriPhotArt.<br>
+    3D空間におけるクジラの曲線生成プログラム
+</div>
+<script>
+    document.getElementById('backButton').addEventListener('click', function() {
+        window.close();
+    });
+</script>
 <div class="container">
   <h1>3D空間におけるクジラを表現する曲線生成プログラムの詳細解説</h1>
   <p>このブログ記事では、JavaScriptを用いて3D空間におけるクジラを表現する曲線生成プログラムの詳細解説を行います。このプログラムは、XYZ形式の点群データを読み込み、Catmull-Rom曲線を用いて滑らかな曲線を生成し、クジラの形を表現します。さらに、追加の線を追加することで、クジラの細部表現を強化します。</p>
