@@ -1,0 +1,24 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 10px;
+}
+
+#topBar {
+    background-color: #f0f0f0;
+    padding: 5px;
+    text-align: center;
+}
+
+button {
+    margin: 3px;
+    padding: 8px 16px;
+    font-size: 14px;
+}
+
+h1 {
+    font-size: 18px;
+}
+
+h2 {
+    font-size: 16px;
+}
