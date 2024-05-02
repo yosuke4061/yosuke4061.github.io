@@ -2,8 +2,6 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4256337388599252"
-     crossorigin="anonymous"></script>
     <title>3D Visualization</title>
     <style>
         body { margin: 0; }
@@ -30,8 +28,15 @@
         情報空間作品
 
         「結　星空　ZERO式」 version 1.0 update 2024/04/27
-    </div>
 
+        <button id="backButton" style="position: absolute; top: 10px; left: 10px; background-color: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">閉じる</button>
+
+    </div>
+    <script>
+        document.getElementById('backButton').addEventListener('click', function() {
+            window.close();
+        });
+    </script>
     <div id="debugInfo">Debug Info</div>
     <script src="https://unpkg.com/three@0.147.0/build/three.min.js"></script>
     <script src="https://unpkg.com/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
