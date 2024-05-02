@@ -42,8 +42,15 @@
 		MidoriPhotArt.<BR>
         点群データの線形表現 動的　クジラ
         ランダムに散らばった点群が徐々にクジラの形になるプログラム
-    </div>
 
+    <button id="backButton" style="position: absolute; top: 10px; left: 10px; background-color: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">閉じる</button>
+
+</div>
+<script>
+    document.getElementById('backButton').addEventListener('click', function() {
+        window.close();
+    });
+</script>
     <div id="debugInfo">Debug Info</div><br>
 
     <script src="https://unpkg.com/three@0.147.0/build/three.min.js"></script>
