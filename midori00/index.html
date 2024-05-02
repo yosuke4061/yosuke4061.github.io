@@ -38,12 +38,18 @@
 </head>
 <body>
     <div id="topBar">
-
 		MidoriPhotArt.<BR>
         空間の設計
+      
     </div>
-    <button id="startButton">View</button> <BR>
+    <button id="backButton" style="position: absolute; top: 10px; left: 10px; background-color: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">閉じる</button>
 
+    <script>
+        document.getElementById('backButton').addEventListener('click', function() {
+            window.close();
+        });
+    </script>
+ 
     <div id="debugInfo">Debug Info</div><br>
 
     <script src="https://unpkg.com/three@0.147.0/build/three.min.js"></script>
