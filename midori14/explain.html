@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>水の表現　その2　画像の高度な波打ち解説</title>
+    <title>水の表現　その2　画像の高度な波打ち解説　解説</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
-            justify-content: center;
+            justify-content: flex-start; /* Changed from center to flex-start */
             align-items: center;
-            height: 100vh;
+            flex-direction: column; /* Change to column to stack elements vertically */
+            min-height: 100vh; /* Changed from height to min-height */
             background-color: #f4f4f4;
         }
         #topBar {
@@ -42,97 +43,63 @@
                 font-size: 14px;
             }
         }
+        #content {
+            background-color: #ffffff;
+            color: #333;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 800px;
+            text-align: left;
+        }
+        code {
+            background-color: #eee;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
     </style>
 </head>
 <body>
-    <div id="topBar">
-        <button id="backButton">閉じる</button>
+    <div>
+        
         水の表現　その2　画像の高度な波打ち解説
     </div>
+    <button id="backButton">閉じる</button>
     <script>
         document.getElementById('backButton').addEventListener('click', function() {
             window.close();
         });
     </script>
 
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>水の表現　その2　画像の高度な波打ち解説</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f4f4f4;
-        }
-        #topBar {
-            background-color: #4CAF50;
-            color: white;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            width: 90%;
-            max-width: 600px;
-            text-align: center;
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        @media (max-width: 600px) {
-            button {
-                padding: 8px 16px;
-            }
-            #topBar {
-                padding: 15px;
-                font-size: 14px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div id="topBar">
-        <button id="backButton">閉じる</button>
-        水の表現　その2　画像の高度な波打ち解説
-    </div>
-    <div>
-        <h1>カスタム水エフェクトの追加</h1>
-        <p>この関数は、Three.jsを使用して水の表面のエフェクトをシミュレートします。</p>
-        <h2>コード解説</h2>
-        <h3>水のジオメトリの作成</h3>
-        <pre><code>const waterGeometry = new THREE.PlaneGeometry(50, 50, 256, 256);</code></pre>
-        <p>50x50の平面を作成し、256x256の分割を行います。これにより、水の波紋がよりリアルに表現されます。</p>
 
-        <h3>テクスチャの読み込み</h3>
-        <pre><code>const textureLoader = new THREE.TextureLoader();
+   <div id="content">
+    <h1>カスタム水エフェクトの追加</h1>
+    <p>この関数は、Three.jsを使用して水の表面のエフェクトをシミュレートします。</p>
+    <h2>コード解説</h2>
+    <h3>水のジオメトリの作成</h3>
+    <pre><code>const waterGeometry = new THREE.PlaneGeometry(50, 50, 256, 256);</code></pre>
+    <p>50x50の平面を作成し、256x256の分割を行います。これにより、水の波紋がよりリアルに表現されます。</p>
+
+    <h3>テクスチャの読み込み</h3>
+    <pre><code>const textureLoader = new THREE.TextureLoader();
 textureLoader.load('_MG_0070.jpg', function(waterTexture) {...});</code></pre>
-        <p>テクスチャローダーを使用して、水のテクスチャを読み込みます。読み込んだテクスチャは繰り返し設定を行い、シームレスな表現を可能にします。</p>
+    <p>テクスチャローダーを使用して、水のテクスチャを読み込みます。読み込んだテクスチャは繰り返し設定を行い、シームレスな表現を可能にします。</p>
 
-        <h3>シェーダーマテリアルの設定</h3>
-        <pre><code>const waterMaterial = new THREE.ShaderMaterial({...});</code></pre>
-        <p>シェーダーマテリアルを使用し、カスタムの頂点シェーダーとフラグメントシェーダーを定義します。これにより、水の動きや高さの変化をリアルタイムで計算し、視覚的に表現します。</p>
+    <h3>シェーダーマテリアルの設定</h3>
+    <pre><code>const waterMaterial = new THREE.ShaderMaterial({...});</code></pre>
+    <p>シェーダーマテリアルを使用し、カスタムの頂点シェーダーとフラグメントシェーダーを定義します。これにより、水の動きや高さの変化をリアルタイムで計算し、視覚的に表現します。</p>
 
-        <h3>水のメッシュの作成とシーンへの追加</h3>
-        <pre><code>const waterMesh = new THREE.Mesh(waterGeometry, waterMaterial);
+    <h3>水のメッシュの作成とシーンへの追加</h3>
+    <pre><code>const waterMesh = new THREE.Mesh(waterGeometry, waterMaterial);
 scene.add(waterMesh);</code></pre>
-        <p>作成したジオメトリとマテリアルからメッシュを作成し、シーンに追加します。メッシュは水平面に配置されます。</p>
+    <p>作成したジオメトリとマテリアルからメッシュを作成し、シーンに追加します。メッシュは水平面に配置されます。</p>
 
-        <h3>アニメーションの実行</h3>
-        <pre><code>function animate() {
-    requestAnimationFrame(animate);
-    waterMaterial.    uniforms.time.value += 0.05;
-    renderer.render(scene, camera);
+    <h3>アニメーションの実行</h3>
+    <pre><code>function animate() {
+requestAnimationFrame(animate);
+waterMaterial.    uniforms.time.value += 0.05;
+renderer.render(scene, camera);
 }
 animate();
 </code></pre>
@@ -145,7 +112,6 @@ animate();
 <p>このエフェクトは、グラフィックスプログラミングにおけるシェーダーの利用を示す良い例です。頂点シェーダーで各頂点の位置を時間に応じて変化させ、フラグメントシェーダーでテクスチャに基づいてピクセルの表示を制御します。このようにして、複雑な自然現象を効率的にシミュレートすることが可能になります。</p>
 
 </div>
-   
 
 
 
