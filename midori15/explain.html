@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>水面のの中に球体を設置　波の波動の影響が球体にも及ぼすようする。　解説</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: flex-start; /* Changed from center to flex-start */
+            align-items: center;
+            flex-direction: column; /* Change to column to stack elements vertically */
+            min-height: 100vh; /* Changed from height to min-height */
+            background-color: #f4f4f4;
+        }
+        #topBar {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        @media (max-width: 600px) {
+            button {
+                padding: 8px 16px;
+            }
+            #topBar {
+                padding: 15px;
+                font-size: 14px;
+            }
+        }
+        #content {
+            background-color: #ffffff;
+            color: #333;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 800px;
+            text-align: left;
+        }
+        code {
+            background-color: #eee;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        水面のの中に球体を設置　波の波動の影響が球体にも及ぼすようする。  解説      
+    </div>
+    <button id="backButton">閉じる</button>
+    <script>
+        document.getElementById('backButton').addEventListener('click', function() {
+            window.close();
+        });
+    </script>
+
+
+    <div id="content">
+        <!DOCTYPE html>
+        <html lang="ja">
+        <head>
+            <meta charset="UTF-8">
+            <title>コード解説</title>
+        </head>
+        <body>
+            <h1>Three.jsによる球体と水面エフェクトの実装解説</h1>
+            <p>このドキュメントでは、Three.jsを使用して球体と水面エフェクトを作成する方法について説明します。</p>
+        
+            <h2>球体の追加</h2>
+            <p>まず、球体をシーンに追加する方法から説明します。以下のコードは、球体を作成し、それをシーンに追加する機能を持っています。</p>
+            <pre><code>const geometry = new THREE.SphereGeometry(15, 32, 32);
+        const material = new THREE.ShaderMaterial({
+            uniforms: {
+                time: { value: 0 },
+                color: { value: new THREE.Color(0x000000) }
+            },
+            vertexShader: `...`,
+            fragmentShader: `...`,
+            transparent: true
+        });
+        const sphere = new THREE.Mesh(geometry, material);
+        sphere.position.set(0, 0, 0);
+        scene.add(sphere);</code></pre>
+            <p><code>THREE.SphereGeometry</code>は球体の形状を定義します。ここでは、半径15、縦横32の分割で球体を作成しています。</p>
+            <p><code>THREE.ShaderMaterial</code>を使用して、カスタムのシェーダーをマテリアルに適用しています。このシェーダーは、時間経過による波打つ効果を球体に適用します。</p>
+        
+            <h2>水面エフェクトの追加</h2>
+            <p>次に、水面エフェクトをシーンに追加する方法を説明します。以下のコードは、水面エフェクトを作成し、それをシーンに追加する機能を持っています。</p>
+            <pre><code>const waterGeometry = new THREE.PlaneGeometry(250, 250, 256, 256);
+        const textureLoader = new THREE.TextureLoader();
+        textureLoader.load('water_1.png', function(waterTexture) {
+            waterTexture.wrapS = waterTexture.wrapT = THREE.RepeatWrapping;
+            waterTexture.repeat.set(50 / waterTexture.image.width, 50 / waterTexture.image.height);
+        
+            const waterMaterial = new THREE.ShaderMaterial({
+                uniforms: {
+                    time: { value: 0 },
+                    waterTexture: { value: waterTexture },
+                    minHeight: { value: 0 },
+                    maxHeight: { value: 1 }
+                },
+                vertexShader: `...`,
+                fragmentShader: `...`,
+                transparent: true
+            });
+        
+            const waterMesh = new THREE.Mesh(waterGeometry, waterMaterial);
+            waterMesh.rotation.x = -Math.PI / 2;
+            scene.add(waterMesh);
+        }, undefined, function(error) {
+            console.error('テクスチャの読み込みに失敗しました:', error);
+        });</code></pre>
+            <p><code>THREE.PlaneGeometry</code>は水面の形状を定義します。ここでは、250x250の平面を256x256の分割で作成しています。</p>
+            <p>テクスチャは<code>THREE.TextureLoader</code>を使用して読み込まれ、水のテクスチャとして適用されます。シェーダーはこのテクスチャを使用して、水面が時間とともに動くような視覚効果を生成します。</p>
+        
+            <h2>まとめ</h2>
+            <p>このドキュメントでは、Three.jsを使用して、動的な視覚効果を持つ3Dオブジェクトをウェブページに追加する方法を説明しました。具体的には、球体と水面エフェクトのを説明しました。具体的には、球体と水面エフェクトの作成とアニメーションの適用方法について解説しました。これにより、リアルタイムで動的なビジュアルエフェクトをウェブページに組み込むことができます。</p>
+
+            <p>これらの技術を使用することで、ウェブベースのアプリケーションやゲームにおいて、より魅力的でインタラクティブなユーザー体験を提供することが可能になります。Three.jsはその強力な3Dグラフィックス機能により
+                、開発者が創造的なビジュアル表現を簡単に実現できるツールです。</p>
+    </div>
+
+</body>
+</html>
