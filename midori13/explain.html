@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>水の表現　その１　テクスチャをお見込み、それを演算で波打つようにする　その１　解説</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        #topBar {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        @media (max-width: 600px) {
+            button {
+                padding: 8px 16px;
+            }
+            #topBar {
+                padding: 15px;
+                font-size: 14px;
+            }
+        }
+        #content {
+            background-color: #ffffff;
+            color: #333;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 800px;
+            text-align: left;
+        }
+        code {
+            background-color: #eee;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div id="topBar">
+        <button id="backButton">閉じる</button>
+        水の表現　その１　テクスチャをお見込み、それを演算で波打つようにする　その１解説
+    </div>
+    <script>
+        document.getElementById('backButton').addEventListener('click', function() {
+            window.close();
+        });
+    </script>
+
+
+<div id="content">
+    <h1>水の表現の解説</h1>
+    <p>このコードは、Three.jsを使用して3Dの水面をシミュレートする方法を示しています。</p>
+    
+    <h2>水の追加</h2>
+    <p><code>addWater</code> 関数では、以下のステップで水面を作成しています：</p>
+    <ol>
+        <li>水面のジオメトリを作成します。これは100x100の平面です。</li>
+        <li>水のマテリアルを設定します。ここでテクスチャ、透明度、光の方向、水の色などを定義します。</li>
+        <li>水面を水平に回転させ、シーンに追加します。</li>
+    </ol>
+    <pre><code>const waterGeometry = new THREE.PlaneGeometry(100, 100);
+water = new THREE.Water(waterGeometry, {
+textureWidth: 3840,
+textureHeight: 2413,
+waterNormals: new THREE.TextureLoader().load('water_1.jpg', function (texture) {
+    texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+}),
+alpha: 0.8,
+sunDirection: new THREE.Vector3(1, 1, 1).normalize(),
+sunColor: 0xffffff,
+waterColor: 0x2d8382,
+distortionScale: 1,
+fog: scene.fog !== undefined
+});
+water.rotation.x = -Math.PI / 2;
+water.position.y = -5;
+scene.add(water);</code></pre>
+
+    <h2>水の更新</h2>
+    <p><code>updateWater</code> 関数では、水のマテリアルの時間パラメータを更新して、波の動きをシミュレートします。</p>
+    <pre><code>if (water) {
+water.material.uniforms['time'].value += 1.0 / 60.0;
+}</code></pre>
+    <p>この関数は、アニメーションループの中で定期的に呼び出されることで、水面がリアルタイムで動くように見えます。</p>
+</div>
+
+
+
+
+
+
+
+</body>
+</html>
