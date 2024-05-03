@@ -12,6 +12,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column; /* Change to column to stack elements vertically */
             height: 100vh;
             background-color: #f4f4f4;
         }
@@ -60,10 +61,11 @@
     </style>
 </head>
 <body>
-    <div id="topBar">
-        <button id="backButton">閉じる</button>
-        水の表現　その１　テクスチャをお見込み、それを演算で波打つようにする　その１解説
+    <div>
+        
+        水の表現　その１　テクスチャをお見込み、それを演算で波打つようにする　その１解説<br>
     </div>
+    <button id="backButton">閉じる</button>
     <script>
         document.getElementById('backButton').addEventListener('click', function() {
             window.close();
