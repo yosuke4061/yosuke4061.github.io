@@ -153,7 +153,7 @@
             </div>  
         </div>
         <div class="nav-bar">
-            <a href="#" class="nav-item" onclick="loadInitialContent()">全て表示</a>
+            <a href="#" class="nav-item" onclick="loadInitialAllContent()">全て表示</a>
             <a href="#" class="nav-item" onclick="loadContent('情報空間写真作品')">情報空間写真作品</a>
             <a href="#" class="nav-item" onclick="loadContent('開発室')">開発室</a>
             <a href="#" class="nav-item" onclick="loadContent('脱線')">脱線</a>
@@ -315,6 +315,32 @@
 
             // 最初の9件のみを取得して表示
             rows.slice(0, 9).forEach(row => {
+                const div = document.createElement('div');
+                div.className = 'content-item';
+                div.innerHTML = `
+                    <h3>${row[0] || ''}</h3>
+                    <p><strong>File Address（コンテンツ）:</strong> ${row[1] ? `<a href="${row[1]}" target="_blank">${row[1]}</a>` : ''}</p>
+                    <p><strong>Date（日付）:</strong> ${row[2] || ''}</p>
+                    <p><strong>Details（題名）:</strong> ${row[3] || ''}</p>
+                    <p><strong>Explain（解説）:</strong> ${row[4] ? `<a href="${row[4]}" target="_blank">${row[4]}</a>` : ''}</p>
+                `;
+                contentContainer.appendChild(div);
+            });
+        } 
+        async function loadInitialAllContent() {
+            const response = await fetch('data.csv');
+            const data = await response.text();
+            const rows = data.split('\n').map(row => row.split(','));
+
+            // ヘッダー行を除外し、日付でソート（新しい順）
+            //rows.shift(); // ヘッダー行を削除
+            rows.sort((a, b) => new Date(b[2]) - new Date(a[2])); // 日付で降順ソート
+
+            const contentContainer = document.getElementById('content-display');
+            contentContainer.innerHTML = ''; // 既存のコンテンツをクリア
+
+            // 全データを表示
+            rows.forEach(row => {
                 const div = document.createElement('div');
                 div.className = 'content-item';
                 div.innerHTML = `
