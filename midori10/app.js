@@ -36,7 +36,7 @@ function init() {
 
 
 function createSuperShape3D() {
-    const numShapes = 500;
+    const numShapes = 100;
     const spread = 200;
     const scale = 18;
     const holeSize = 50; // 中央の空洞のサイズを定義
