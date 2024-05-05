@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>　球体の上下運動　解説</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: flex-start; /* Changed from center to flex-start */
+            align-items: center;
+            flex-direction: column; /* Change to column to stack elements vertically */
+            min-height: 100vh; /* Changed from height to min-height */
+            background-color: #f4f4f4;
+        }
+        #topBar {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        @media (max-width: 600px) {
+            button {
+                padding: 8px 16px;
+            }
+            #topBar {
+                padding: 15px;
+                font-size: 14px;
+            }
+        }
+        #content {
+            background-color: #ffffff;
+            color: #333;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 800px;
+            text-align: left;
+        }
+        code {
+            background-color: #eee;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+       球体の上下運動 解説      
+    </div>
+    <button id="backButton">閉じる</button>
+    <script>
+        document.getElementById('backButton').addEventListener('click', function() {
+            window.close();
+        });
+    </script>
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>createWideSpreadCloud 関数の解説</title>
+</head>
+<body>
+    <h1>createWideSpreadCloud 関数の解説</h1>
+    <p>この関数は、ランダムな位置、サイズ、色の球体を生成して、それらをグループ化し、シーンに追加することで、広範囲に広がる雲のようなオブジェクトを作成します。以下に、関数の各部分を詳細に解説します。</p>
+    
+    <h2>関数の初期設定</h2>
+    <code>
+        cloud = new THREE.Group(); // 雲を形成するグループをグローバル変数に保存<br>
+        const cloudCenter = new THREE.Vector3(0, 50, 0);<br>
+        const numSpheres = 100;<br>
+        const spread = 300;
+    </code>
+    <ul>
+        <li><b>cloud</b>: THREE.Group オブジェクトを作成し、これを使用して生成されるすべての球体を一つのグループにまとめます。</li>
+        <li><b>cloudCenter</b>: 雲の中心位置を設定します。</li>
+        <li><b>numSpheres</b>: 生成する球体の数を定義します。</li>
+        <li><b>spread</b>: 球体が配置される範囲の広さを指定します。</li>
+    </ul>
+
+    <h2>球体の生成と設定</h2>
+    <code>
+        for (let i = 0; i < numSpheres; i++) {<br>
+            const size = Math.random() * 10 + 5;<br>
+            const geometry = new THREE.SphereGeometry(size, 32, 32);<br>
+            const hue = Math.random() * 360;<br>
+            const saturation = Math.random() * 100;<br>
+            const lightness = Math.random() * 50 + 50;<br>
+            const material = new THREE.MeshLambertMaterial({<br>
+                color: new THREE.Color(`hsl(${hue}, ${saturation}%, ${lightness}%)`),<br>
+                opacity: 0.9,<br>
+                transparent: true<br>
+            });<br>
+            const sphere = new THREE.Mesh(geometry, material);
+        }
+    </code>
+    <ul>
+        <li><b>size</b>: 球体のサイズをランダムに設定します。</li>
+        <li><b>geometry</b>: 球体の形状を定義します。</li>
+        <li><b>hue</b>, <b>saturation</b>, <b>lightness</b>: HSL色空間を使用して球体の色をランダムに設定します。</li>
+        <li><b>material</b>: 球体のマテリアルを設定します。透明度と色を指定しています。</li>
+    </ul>
+
+    <h2>球体の位置設定と動的プロパティの追加</h2>
+    <code>
+        const offset = new THREE.Vector3(<br>
+            (Math.random() - 0.5) * spread,<br>
+            (Math.random() - 0.5) * spread * 0.5,<br>
+            (Math.random() - 0.5) * spread<br>
+        );<br>
+        sphere.position.addVectors(cloudCenter, offset);<br>
+        <br>
+        // 個々の球体に速度と加速度を追加<br>
+        sphere.userData = {<br>
+            velocity: 0,<br>
+            acceleration: 0.01 * (Math.random() - 0.5)<br>
+        };<br>
+        <br>
+        cloud.add(sphere);<br>
+    }
+    <ul>
+        <li><b>offset</b>: 球体の位置をランダムに設定します。cloudCenterからの相対位置を計算しています。</li>
+        <li><b>userData</b>: 各球体に速度(velocity)と加速度(acceleration)を追加します。これにより、アニメーション中に球体が動的に動くことが可能になります。</li>
+        </ul>
+        <h2>シーンへの追加</h2>
+        <code>
+        scene.add(cloud);
+        </code>
+        <p>生成した雲のグループをシーンに追加します。これにより、雲がレンダリングされ、視覚的に表示されるようになります。</p>
+        </body>
+        </html>
+
+
+    <div id="content">
+    </div>
+
+</body>
+</html>

@@ -233,7 +233,7 @@ function addWaterSurfaceEffect(position) {
     // 水面エフェクト用のジオメトリとマテリアルを作成
     const geometry = new THREE.CircleGeometry(5, 32);
     const material = new THREE.MeshBasicMaterial({
-        color: 0x00ffff, // 水色
+        color: 0x2552f3, // 水色
         transparent: true,
         opacity: 0.5
     });
@@ -313,7 +313,7 @@ function addTexturedWavyGround() {
 }
 function addSkyAndGround(){
     // 空の色
-    const skyColor = new THREE.Color(0x94d6d2); // 明るい青
+    const skyColor = new THREE.Color(0x9fd2ef); // 明るい青
     // 地面の色
     const groundColor = new THREE.Color(0x000000); // 明るい黄色
 
