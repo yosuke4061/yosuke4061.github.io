@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>球体をクリックすると粒子が飛び出す　解説</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: flex-start; /* Changed from center to flex-start */
+            align-items: center;
+            flex-direction: column; /* Change to column to stack elements vertically */
+            min-height: 100vh; /* Changed from height to min-height */
+            background-color: #f4f4f4;
+        }
+        #topBar {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        @media (max-width: 600px) {
+            button {
+                padding: 8px 16px;
+            }
+            #topBar {
+                padding: 15px;
+                font-size: 14px;
+            }
+        }
+        #content {
+            background-color: #ffffff;
+            color: #333;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 800px;
+            text-align: left;
+        }
+        code {
+            background-color: #eee;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        球体をクリックすると粒子が飛び出す  解説      
+    </div>
+    <button id="backButton">閉じる</button>
+    <script>
+        document.getElementById('backButton').addEventListener('click', function() {
+            window.close();
+        });
+    </script>
+
+
+    <div id="content">
+        <h1>Three.jsによる球体の爆発エフェクトの解説</h1>
+        <p>このプログラムは、Three.jsを利用して、複数の球体を3D空間に生成し、それぞれの球体がクリックされた際に爆発するエフェクトを実現するものです。</p>
+    
+        <h2>関数の概要</h2>
+        <ul>
+            <li><strong>createMultipleExplodableSpheres</strong>: 複数の球体を生成し、それぞれにランダムな色と位置を設定します。生成された各球体にはクリックイベントリスナーが追加されます。</li>
+            <li><strong>addClickListener</strong>: 引数として受け取った球体に対してクリックイベントリスナーを設定します。クリックされた球体が特定されると、その球体は<code>explodeSphere</code>関数を呼び出して爆発します。</li>
+            <li><strong>explodeSphere</strong>: クリックされた球体を爆発させるための関数です。球体から小さな球体のパーティクルを生成し、それらにランダムな方向への初速を与えます。これらのパーティクルは一定の距離まで広がった後、シーンから削除されます。</li>
+            <li><strong>checkAllParticlesStopped</strong>: すべてのパーティクルが停止したかどうかをチェックするための関数です。この関数は現在使用されていませんが、将来的な拡張のために用意されています。</li>
+        </ul>
+    
+        <h2>詳細なコード解説</h2>
+        <h3>createMultipleExplodableSpheres関数</h3>
+        <p>この関数は、指定された数（この例では10個）の球体を生成します。各球体は<code>THREE.SphereGeometry</code>を使用して形状が定義され、<code>THREE.MeshPhongMaterial</code>でランダムな色が設定されます。球体はシーンに追加された後、<code>addClickListener</code>関数を呼び出して、クリックイベントリスナーが設定されます。</p>
+    
+        <h3>addClickListener関数</h3>
+        <p>この関数は、特定の球体にクリックイベントリスナーを追加します。ユーザーがウィンドウ内でクリックすると、<code>THREE.Raycaster</code>が使用されてクリックされた位置から球体への線が引かれ、交差する球体が特定されます。交差した球体が存在する場合、<code>explodeSphere</code>関数が呼び出されます。</p>
+    
+        <h3>explodeSphere関数</h3>
+        <p>クリックされた球体から300個の小さな球体パーティクルを生成し、ックされた球体から300個の小さな球体パーティクルを生成し、それぞれにランダムな方向への初速を与えます。これらのパーティクルは、<code>THREE.Mesh</code>を使用して作成され、<code>THREE.SphereGeometry</code>と<code>THREE.MeshPhongMaterial</code>を使用して、元の球体と同じ色と発光特性を持つように設定されます。パーティクルは一定の距離（この例では150ユニット）まで広がった後、シーンから削除されます。</p>
+
+        <h3>checkAllParticlesStopped関数</h3>
+        <p>この関数は、すべてのパーティクルが停止したかどうかをチェックするために使用されます。各パーティクルの速度を計算し、すべての速度が一定の閾値（この例では0.01）以下になった場合に真を返します。この関数は現在のコードでは使用されていませんが、パーティクルの動きをより細かく制御したい場合に役立つ可能性があります。</p>
+        
+        <h2>まとめ</h2>
+        <p>このプログラムは、Three.jsを使用して3D空間内で視覚的に魅力的なエフェクトを作成する方法を示しています。複数の球体がランダムな位置に配置され、ユーザーのインタラクションに応じて動的に反応することで、インタラクティブな3Dアプリケーションやゲームに適用可能な技術です。</p>
+
+    </div>
+
+</body>
+</html>
