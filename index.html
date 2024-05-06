@@ -346,9 +346,13 @@
             });
         } 
         async function loadInitialAllContent() {
+        try {
             const response = await fetch('data.csv');
+            if (!response.ok) {
+                throw new Error('Network response was not ok.');
+            }
             const data = await response.text();
-            const rows = data.split('\n').map(row => row.split(','));
+            const rows = data.split('\n').map(row => row.split(',')).filter(row => row.length > 1 && row[0]); // 空の行を除外
 
             const contentContainer = document.getElementById('content-display');
             contentContainer.innerHTML = ''; // 既存のコンテンツをクリア
@@ -367,16 +371,19 @@
                     }
                 }
                 div.innerHTML = `
-                    <h3>${row[0] || ''}</h3>
-                    <p><strong>File Address（コンテンツ）:</strong> ${row[1] ? `<a href="${row[1]}" target="_blank">${row[1]}</a>` : ''}</p>
+                    <h3>${row[0] || 'タイトル不明'}</h3>
+                    <p><strong>File Address（コンテンツ）:</strong> ${row[1] ? `<a href="${row[1]}" target="_blank">${row[1]}</a>` : '情報がありません'}</p>
                     <p><strong>Last Modified（更新日時）:</strong> ${lastModified || '情報が取得できません'}</p>
-                    <p><strong>Date（日付）:</strong> ${row[2] || ''}</p>
-                    <p><strong>Details（題名）:</strong> ${row[3] || ''}</p>
-                    <p><strong>Explain（解説）:</strong> ${row[4] ? `<a href="${row[4]}" target="_blank">${row[4]}</a>` : ''}</p>
+                    <p><strong>Date（日付）:</strong> ${row[2] || '日付不明'}</p>
+                    <p><strong>Details（題名）:</strong> ${row[3] || '詳細不明'}</p>
+                    <p><strong>Explain（解説）:</strong> ${row[4] ? `<a href="${row[4]}" target="_blank">${row[4]}</a>` : '解説がありません'}</p>
                 `;
                 contentContainer.appendChild(div);
             });
-        } 
+        } catch (error) {
+            console.error('Failed to load all content:', error);
+        }
+    }
     </script>
 </body>
 </html>
