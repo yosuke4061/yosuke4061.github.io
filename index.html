@@ -318,10 +318,6 @@
             const data = await response.text();
             const rows = data.split('\n').map(row => row.split(','));
 
-            // ヘッダー行を除外し、日付でソート（新しい順）
-            //rows.shift(); // ヘッダー行を削除
-            rows.sort((a, b) => new Date(b[2]) - new Date(a[2])); // 日付で降順ソート
-
             const contentContainer = document.getElementById('content-display');
             contentContainer.innerHTML = ''; // 既存のコンテンツをクリア
 
@@ -353,10 +349,6 @@
             const response = await fetch('data.csv');
             const data = await response.text();
             const rows = data.split('\n').map(row => row.split(','));
-
-            // ヘッダー行を除外し、日付でソート（新しい順）
-            //rows.shift(); // ヘッダー行を削除
-            rows.sort((a, b) => new Date(b[2]) - new Date(a[2])); // 日付で降順ソート
 
             const contentContainer = document.getElementById('content-display');
             contentContainer.innerHTML = ''; // 既存のコンテンツをクリア
