@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ベースとなる基礎空間の定義　モジュール利用　解説</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: flex-start; /* Changed from center to flex-start */
+            align-items: center;
+            flex-direction: column; /* Change to column to stack elements vertically */
+            min-height: 100vh; /* Changed from height to min-height */
+            background-color: #f4f4f4;
+        }
+        #topBar {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        @media (max-width: 600px) {
+            button {
+                padding: 8px 16px;
+            }
+            #topBar {
+                padding: 15px;
+                font-size: 14px;
+            }
+        }
+        #content {
+            background-color: #ffffff;
+            color: #333;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 800px;
+            text-align: left;
+        }
+        code {
+            background-color: #eee;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        ベースとなる基礎空間の定義　モジュール利用　   解説      
+    </div>
+    <button id="backButton">閉じる</button>
+    <script>
+        document.getElementById('backButton').addEventListener('click', function() {
+            window.close();
+        });
+    </script>
+
+
+    <div id="content">
+        <h1>Three.js アプリケーションの基本的な構成</h1>
+        <p>この記事では、Three.js を使用して3Dシーンを作成し、操作する基本的な方法について解説します。</p>
+    
+        <h2>初期化関数 (init)</h2>
+        <p>アプリケーションの初期化を行う主要な関数です。カメラ、レンダラー、シーンの設定、コントロール、統計情報の表示など、基本的なコンポーネントの設定を行います。</p>
+        <pre><code>
+        function init() {
+            // カメラの作成
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 5, 10);
+            camera.lookAt(0, 0, 0);
+    
+            // レンダラーの作成
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+    
+            // シーンの設定
+            setupScene();
+    
+            // グリッドの平面の作成
+            const gridHelper = new THREE.GridHelper(100, 100);
+            scene.add(gridHelper);
+    
+            // XYZ軸の矢印の作成
+            const axesHelper = new THREE.AxesHelper(10);
+            scene.add(axesHelper);
+    
+            // コントロールの設定
+            setupControls();
+    
+            // Statsの設定
+            stats = new Stats();
+            stats.domElement.style.position = 'absolute';
+            stats.domElement.style.top = '0px';
+            stats.domElement.style.right = '0px';
+            stats.domElement.style.left = 'auto';
+            document.body.appendChild(stats.dom);
+    
+            // ウィンドウリサイズのハンドリング
+            window.addEventListener('resize', onWindowResize, false);
+        }
+        </code></pre>
+    
+        <h2>シーンの設定 (setupScene)</h2>
+        <p>シーンに関連する設定を行う関数です。背景色、霧、環境光、平行光源、シャドウの設定を含みます。</p>
+        <pre><code>
+        function setupScene() {
+            const SCENE_SETTINGS = {
+                backgroundColor: 0x000000,
+                fogColor: 0xaaccff,
+                fogNear: 1,
+                fogFar: 1000,
+                ambientLightColor: 0x404040
+            };
+    
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(SCENE_SETTINGS.backgroundColor);
+            scene.fog = new THREE.Fog(SCENE_SETTINGS.fogColor, SCENE_SETTINGS.fogNear, SCENE_SETTINGS.fogFar);
+    
+            const ambientLight = new THREE.AmbientLight(SCENE_SETTINGS.ambientLightColor);
+            scene.add(ambientLight);
+    
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+            directionalLight.position.set(1, 1, 1);
+            scene.add(directionalLight);
+    
+            renderer.shadowMap.enabled = true;
+            directionalLight.castShadow = true;
+    
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            directionalLight.shadow.mapSize.width = 1024;
+            directionalLight.shadow.mapSize.height = 1024;
+            directionalLight.shadow.camera.near = 0.5;
+            directionalLight.shadow.camera.far = 500;
+        }
+        </code></pre>
+    
+        <h2>コントロールの設定 (setupControls)</h2>
+        <p>ユーザーがカメラを操作できるようにするためのコントロールを設定します。回転、ズーム、パンニングの制限を設定することで、ユーザーインターフェースの使いやすさを向上させます。</p>
+        <pre><code>
+        function setupControls() {
+            controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.screenSpacePanning = true;
+        
+            // 上下の回転制限を180度に設定
+            controls.maxPolarAngle = Math.PI; // 180度
+            controls.minPolarAngle = 0; // 0度 (下向きの回転を防ぐため)
+        
+            // 左右の回転制限を90度に設定
+            controls.maxAzimuthAngle = Math.PI / 2; // 90度
+            controls.minAzimuthAngle = -Math.PI / 2; // -90度
+        
+            controls.enablePan = true;
+        
+            if (/Mobi|Android/i.test(navigator.userAgent)) {
+                controls.panSpeed = 0.3;
+                controls.touchDampingFactor = 0.2;
+            } else {
+                controls.panSpeed = 0.5;
+                controls.touchDampingFactor = 0.1;
+            }
+        }
+        </code></pre>
+        
+        <h2>ウィンドウリサイズのハンドリング (onWindowResize)</h2>
+        <p>ウィンドウのサイズが変更されたときにカメラとレンダラーの設定を更新する関数です。これにより、画面のリサイズ時にもビジュアルが正しく表示され続けます。</p>
+        <pre><code>
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+        </code></pre>
+        
+        <h2>アニメーションループ (animate)</h2>
+        <p>シーンを連続的にレンダリングし、コントロールや統計情報の更新を行う関数です。このループにより、シーンはスムーズに動作し、ユーザーの入力に応じてリアルタイムで反応します。</p>
+        <pre><code>
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+            stats.update();
+        }
+        </code></pre>
+        
+        <h2>全体の実行</h2>
+        <p>ページがロードされたときに <code>init</code> 関数を呼び出し、その後 <code>animate</code> 関数を実行してアニメーションループを開始します。</p>
+        <pre><code>
+        init();
+        animate();
+        </code></pre>、
+
+
+
+
+
+
+
+
+    </div>
+
+</body>
+</html>

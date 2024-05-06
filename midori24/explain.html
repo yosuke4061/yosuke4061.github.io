@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>　three.js サンプルプログラムの改良　山岳と霧　　解説</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: flex-start; /* Changed from center to flex-start */
+            align-items: center;
+            flex-direction: column; /* Change to column to stack elements vertically */
+            min-height: 100vh; /* Changed from height to min-height */
+            background-color: #f4f4f4;
+        }
+        #topBar {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        @media (max-width: 600px) {
+            button {
+                padding: 8px 16px;
+            }
+            #topBar {
+                padding: 15px;
+                font-size: 14px;
+            }
+        }
+        #content {
+            background-color: #ffffff;
+            color: #333;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 800px;
+            text-align: left;
+        }
+        code {
+            background-color: #eee;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        three.js サンプルプログラムの改良　山岳と霧　解説      
+    </div>
+    <button id="backButton">閉じる</button>
+    <script>
+        document.getElementById('backButton').addEventListener('click', function() {
+            window.close();
+        });
+    </script>
+
+
+    <div id="content">
+        <!DOCTYPE html>
+        <html lang="ja">
+        <head>
+            <meta charset="UTF-8">
+            <title>Three.jsによる地形生成の解説</title>
+            <style>
+                body { font-family: Arial, sans-serif; line-height: 1.6; }
+                code { background-color: #f4f4f4; padding: 2px 5px; }
+            </style>
+        </head>
+        <body>
+            <h1>Three.jsによる地形生成の解説</h1>
+            <p>この記事では、Three.jsを使用して地形を生成し、それに霧の効果を加える方法について説明します。</p>
+        
+            <h2>addTerrain() 関数</h2>
+            <p><code>addTerrain()</code> 関数は、地形のメッシュを生成し、シーンに追加する役割を持っています。以下にその主要なステップを示します。</p>
+            <ol>
+                <li>地形の幅と深さを定義します。</li>
+                <li>高さデータを生成するために <code>generateHeight()</code> 関数を呼び出します。</li>
+                <li>Three.jsの <code>PlaneGeometry</code> を使用して地形のジオメトリを作成します。</li>
+                <li>生成した高さデータをもとに頂点の位置を調整します。</li>
+                <li>テクスチャと法線マップを生成し、マテリアルに適用します。</li>
+                <li>最終的にメッシュを作成し、シーンに追加します。</li>
+            </ol>
+        
+            <h3>コード例</h3>
+            <pre><code>function addTerrain() {
+            const worldWidth = 256, worldDepth = 256;
+            const data = generateHeight(worldWidth, worldDepth);
+            const geometry = new THREE.PlaneGeometry(5000, 5000, worldWidth - 1, worldDepth - 1);
+            geometry.rotateX(-Math.PI / 2);
+            const vertices = geometry.attributes.position.array;
+            for (let i = 0, j = 0, l = vertices.length; i < l; i++, j += 3) {
+                vertices[j + 1] = data[i] * 10;
+            }
+            const texture = new THREE.CanvasTexture(generateTexture(data, worldWidth, worldDepth));
+            const normalTexture = generateNormalMap(data, worldWidth, worldDepth);
+            const material = new THREE.MeshStandardMaterial({
+                map: texture,
+                normalMap: normalTexture
+            });
+            const mesh = new THREE.Mesh(geometry, material);
+            mesh.position.y = -500;
+            scene.add(mesh);
+        }</code></pre>
+        
+            <h2>関連する関数</h2>
+            <h3>generateHeight()</h3>
+            <p><code>generateHeight()</code> 関数は、指定された幅と高さに基づいてランダムな高さデータを生成します。このデータは地形の頂点の高さを決定するために使用されます。</p>
+        
+            <h3>generateTexture()</h3>
+            <p><code>generateTexture()</code> 関数は、高さデータからテクスチャを生成します。このテクスチャは地形の表面に適用され、視覚的な詳細を提供します。</p>
+        
+            <h3>generateNormalMap()</h3>
+            <p><code>generateNormalMap()</code> 関数は、高さデータを使用して法線マップを生成します。法線マップを生成します。法線マップは、光の反射をリアルに再現するために使用され、地形のテクスチャに立体感を与えます。</p>
+            <h2>霧の効果の調整</h2>
+            <p>霧の効果は、<code>THREE.Fog</code> を使用してシーンに追加されます。霧は、遠くのオブジェクトをぼかすことで、よりリアルな景観を作り出すのに役立ちます。霧の密度は、<code>fogNear</code> と <code>fogFar</code> パラメータで調整できます。</p>
+            <h3>コード例</h3>
+            <pre><code>scene.fog = new THREE.Fog(0xf0faff, 200, 1000);</code></pre>
+            <p>この設定では、霧は200ユニットの距離で始まり、1000ユニットで完全に消失します。これにより、カメラから遠く離れた地点では霧によって視界が遮られ、近くの地形はクリアに見えるようになります。</p>
+            <h2>まとめ</h2>
+            <p>この記事では、Three.jsを使用して地形を生成し、霧の効果を加える方法について説明しました。これらの技術を駆使することで、リアルタイムで美しい3D環境を作成することが可能です。地形の解像度を高めることで詳細な地形を作り出し、霧の効果を適切に調整することで、視覚的な深みを加えることができます。</p>
+
+
+
+    </div>
+
+</body>
+</html>
