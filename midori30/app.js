@@ -7,6 +7,7 @@ import { FluidSimulation } from './FluidSimulation.js';
 let scene, camera, renderer, controls, stats;
 let fluidSimulation;
 let sphere; // 球体のグローバル参照
+let group;
 
 function init() {
 
@@ -23,7 +24,7 @@ function init() {
         //setTimeout(startAnimation, 3000);
         startAnimation();
     });
-    camera.position.set(0, 250, 150);
+  
 
 
     // ウィンドウリサイズのハンドリング
@@ -67,7 +68,7 @@ function startAnimation() {
     animate(); // アニメーションループを開始する
 }
 function setupSceneObjects() {
-    const group = new THREE.Group(); // グループを作成
+    group = new THREE.Group(); // グループを作成
 
     // 球体の作成
     const sphereGeometry = new THREE.SphereGeometry(30, 32, 32);
@@ -96,7 +97,8 @@ function setupSceneObjects() {
     });
     // グループの位置を下げる
     group.position.y += 180; // 現在の位置から100単位下げる
-    camera.lookAt(group.position.x,group.position.y,group.position.z);
+    camera.position.set(200, 300, 0);
+    camera.lookAt(0,180,0);
     
     scene.add(group); // シーンにグループを追加
 
@@ -206,9 +208,9 @@ function animate() {
     requestAnimationFrame(animate);
 
     // 球体の回転を更新
-    if (sphere) {
-        sphere.rotation.y += 0.01;
-        sphere.rotation.x += 0.01;
+    if (group) {
+        group.rotation.y += 0.01;
+        group.rotation.x += 0.01;
     }
     // FluidSimulation の更新
     fluidSimulation.update();
