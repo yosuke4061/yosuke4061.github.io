@@ -126,6 +126,9 @@ function setupControls() {
     controls.minAzimuthAngle = -Math.PI / 2; // -90度
     controls.enablePan = true;
 
+    // スマートフォンでの二点タッチによるパン操作を有効にする
+    controls.enableTouchPan = true;
+
     if (/Mobi|Android/i.test(navigator.userAgent)) {
         controls.panSpeed = 0.3;
         controls.touchDampingFactor = 0.2;
