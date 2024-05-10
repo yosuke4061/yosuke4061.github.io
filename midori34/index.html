@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>3D Visualization</title>
+    <style>
+        body { margin: 0; }
+        #topBar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: gray;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        #debugInfo {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: white;
+        }
+        #startButton {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <button id="startButton">View</button> <BR>
+  
+    <div id="topBar">
+        MidoriPhotArt.<br>
+        流体　没　処理がとても重い　複数画像に複数流体
+        <button id="backButton" style="position: absolute; top: 10px; left: 10px; background-color: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">閉じる</button>
+    </div>
+    <script type="importmap">
+        {
+          "imports": {
+            "three": "https://unpkg.com/three@0.147.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.147.0/examples/jsm/"
+          }
+        }
+    </script>
+    <script type="module" src="app.js"></script>
+    <script>
+        document.getElementById('backButton').addEventListener('click', function() {
+            window.close();
+        });
+    </script>
+</body>
+</html>

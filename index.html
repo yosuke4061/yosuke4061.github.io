@@ -276,7 +276,7 @@
         }        
 
         async function loadContent(category) {
-            const response = await fetch('data.csv');
+            const response = await fetch('data.csv', { cache: 'no-cache' });
             const data = await response.text();
             const rows = data.split('\n').map(row => row.split(','));
             const filteredData = rows.filter(row => row[0] === category);
@@ -315,7 +315,7 @@
          });
 
         async function loadInitialContent() {
-            const response = await fetch('data.csv');
+            const response = await fetch('data.csv', { cache: 'no-cache' });
             const data = await response.text();
             const rows = data.split('\n').map(row => row.split(','));
 
@@ -348,7 +348,7 @@
         } 
         async function loadInitialAllContent() {
         try {
-            const response = await fetch('data.csv');
+            const response = await fetch('data.csv', { cache: 'no-cache' });
             if (!response.ok) {
                 throw new Error('Network response was not ok.');
             }
