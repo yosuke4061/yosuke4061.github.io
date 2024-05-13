@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>雲の高度な表現手法　平面を利用した雲の表現　　解説</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: flex-start; /* Changed from center to flex-start */
+            align-items: center;
+            flex-direction: column; /* Change to column to stack elements vertically */
+            min-height: 100vh; /* Changed from height to min-height */
+            background-color: #f4f4f4;
+        }
+        #topBar {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        @media (max-width: 600px) {
+            button {
+                padding: 8px 16px;
+            }
+            #topBar {
+                padding: 15px;
+                font-size: 14px;
+            }
+        }
+        #content {
+            background-color: #ffffff;
+            color: #333;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 800px;
+            text-align: left;
+        }
+        code {
+            background-color: #eee;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+雲の高度な表現手法　平面を利用した雲の表現　解説      
+    </div>
+    <button id="backButton">閉じる</button>
+    <script>
+        document.getElementById('backButton').addEventListener('click', function() {
+            window.close();
+        });
+    </script>
+    <div id="content">
+        <h1>createLiquidSphere 関数</h1>
+        <p><strong>使用方法:</strong> この関数は、動的な液体のような効果を持つ球体を作成します。色、サイズ、位置、カメラオブジェクトを引数として受け取ります。</p>
+        <h2>詳細な説明</h2>
+        <p>この関数は、THREE.jsのライブラリを使用して、シェーダーマテリアルを用いた3Dの球体を生成します。球体は、頂点シェーダーとフラグメントシェーダーで定義されたカスタムの視覚効果を持ちます。</p>
+        <h3>頂点シェーダー</h3>
+        <pre>
+        <code>
+        varying vec2 vUv;<BR>
+        varying vec3 vNormal;<BR>
+        varying vec3 vPosition;<BR>
+        uniform float time;<BR>
+        uniform float amplitude;<BR>
+        <BR>
+        float rand(float n) {<BR>
+            return fract(sin(n) * 43758.5453123);<BR>
+        }<BR>
+        <BR>
+        float noise(vec3 point) {<BR>
+            vec3 i = floor(point);<BR>
+            vec3 f = fract(point);<BR>
+            f = f * f * (3.0 - 2.0 * f);<BR>
+            float n = dot(i, vec3(1.0, 57.0, 113.0));<BR>
+            float a = mix(rand(n), rand(n + 1.0), f.x);<BR>
+            float b = mix(rand(n + 57.0), rand(n + 58.0), f.x);<BR>
+            float c = mix(a, b, f.y);<BR>
+            float d = mix(rand(n + 113.0), rand(n + 114.0), f.x);<BR>
+            float e = mix(rand(n + 170.0), rand(n + 171.0), f.x);<BR>
+            float f1 = mix(d, e, f.y);<BR>
+            return mix(c, f1, f.z);<BR>
+        }<BR>
+        <BR>
+        void main() {<BR>
+            vUv = uv;<BR>
+            vec3 pos = position;<BR>
+            float offset = noise(position * 0.5 + time * 0.5) * amplitude;<BR>
+            pos += normal * offset * 0.1;<BR>
+            vNormal = normalize(normalMatrix * normal);<BR>
+            vPosition = pos;<BR>
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);<BR>
+        }
+        </code>
+        </pre>
+        <h3>フラグメントシェーダー</h3>
+        <pre>
+        <code>
+        varying vec2 vUv;<BR>
+        varying vec3 vNormal;<BR>
+        varying vec3 vPosition;<BR>
+        uniform vec3 baseColor;<BR>
+        uniform vec3 viewPosition;<BR>
+        uniform float time;<BR>
+        <BR>
+        void main() {<BR>
+            vec3 viewDirection = normalize(viewPosition - vPosition);<BR>
+            float fresnelEffect = pow(1.0 - max(dot(viewDirection, vNormal), 0.0), 3.0) * 0.5;<BR>
+            vec3 lightDirection = normalize(vec3(0.5, 1.0, 0.75));<BR>
+            float intensity = max(dot(vNormal, lightDirection), 0.0);<BR>
+            float specular = pow(intensity, 20.0) * 2.0;<BR>
+            float alpha = 0.3 + 0.7 * (1.0 - intensity);<BR>
+            float cycle = abs(sin(time)); // 時間に応じてサイクルを作成<BR>
+            vec3 color = mix(baseColor, vec3(1.0, 1.0, 1.0), specular); // baseColor を使用<BR>
+            gl_FragColor = vec4(color * (1.0 + specular) + vec3(fresnelEffect), alpha * cycle); // alphaにcycleを掛ける<BR>
+        }
+        </code>
+        </pre>
+        <p>このシェーダーは、球体の表面に動的な変化を与えるためにノイズ関数を使用しています。ノイズによって生成される値は、球体の各頂点の位置を変動させ、液体のような外観を作り出します。また、フラグメントシェーダーでは、視点の位置との角度に基づいてフレネル効果を計算し、光の反射をシミュレートしています。</p>
+        <p>さらに、光の強度に基づいて色と透明度が調整され、時間の経過による視覚的な変化が加えられます。これにより、球体は時間とともに色や透明度が変わる動的なオブジェクトとして表現されます。</p>
+        <h3>関数の使用</h3>
+        <p>この関数を使用するには、THREE.jsの環境がセットアップされている必要があります。関数は以下のように呼び出すことができます：</p>
+        <pre>
+        <code>
+        // カメラとシーンの設定
+        var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);<BR>
+        var scene = new THREE.Scene();<BR>
+        <BR>
+        // 球体の作成
+        var sphere = createLiquidSphere('blue', 5, new THREE.Vector3(0, 0, 0), camera);<BR>
+        </code>
+        </pre>
+        <p>ここで、<code>createLiquidSphere</code> 関数は、色（'blue'）、サイズ（5）、位置（new THREE.Vector3(0, 0, 0)）、カメラオブジェクト（camera）を引数に取ります。</p>
+    </div>
+
+</body>
+</html>

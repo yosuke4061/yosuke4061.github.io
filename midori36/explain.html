@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>雲の高度な表現手法　平面を利用した雲の表現　　解説</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: flex-start; /* Changed from center to flex-start */
+            align-items: center;
+            flex-direction: column; /* Change to column to stack elements vertically */
+            min-height: 100vh; /* Changed from height to min-height */
+            background-color: #f4f4f4;
+        }
+        #topBar {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        @media (max-width: 600px) {
+            button {
+                padding: 8px 16px;
+            }
+            #topBar {
+                padding: 15px;
+                font-size: 14px;
+            }
+        }
+        #content {
+            background-color: #ffffff;
+            color: #333;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 800px;
+            text-align: left;
+        }
+        code {
+            display: block;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #eee;
+            border-left: 3px solid #4CAF50;
+            color: #333;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        pre {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        padding: 5px;
+        overflow-x: auto;
+    }
+    </style>
+</head>
+<body>
+    <div>
+雲の高度な表現手法　平面を利用した雲の表現　解説      
+    </div>
+    <button id="backButton">閉じる</button>
+    <script>
+        document.getElementById('backButton').addEventListener('click', function() {
+            window.close();
+        });
+    </script>
+
+
+    <div id="content">
+        <h1>createVolumetricCloud 関数の解説</h1>
+        <h2>概要</h2>
+        <p>この関数は、Three.js を使用して体積雲を生成するためのものです。生成された雲は、シェーダーマテリアルを使用してリアルタイムで視覚的な効果が適用されます。</p>
+        
+        <h2>使用方法</h2>
+        <code>
+            const cloud = createVolumetricCloud();
+            scene.add(cloud);
+        </code>
+        
+        <h2>コードの詳細</h2>
+        <h3>ジオメトリの作成</h3>
+        <p>まず、<code>THREE.SphereGeometry</code> を使用して球体のジオメトリを作成します。このジオメトリは、x軸方向に非常に平たくスケールされ、楕円体を形成します。</p>
+        <code>
+            const cloudGeometry = new THREE.SphereGeometry(5, 32, 32);
+            cloudGeometry.scale(30, 0.01, 30);
+        </code>
+        
+        <h3>シェーダーマテリアルの設定</h3>
+        <p>シェーダーマテリアルは、頂点シェーダーとフラグメントシェーダーで構成されます。これにより、雲の見た目がリアルタイムで生成されます。</p>
+        <p>頂点シェーダーでは、頂点の位置を <code>vPosition</code> として渡し、フラグメントシェーダーで使用します。</p>
+        <p>フラグメントシェーダーでは、ノイズ関数を使用して雲の密度を計算し、その密度に基づいて色と透明度を設定します。</p>
+        <code>
+            vertexShader: `
+                varying vec3 vPosition;
+                void main() {
+                    vPosition = position;
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+            `,
+            fragmentShader: `
+                varying vec3 vPosition;
+                uniform float time;
+                uniform float amplitude;
+                uniform vec3 baseColor;
+                uniform vec3 viewPosition;
+                uniform samplerCube envMap;
+                ...
+            `
+        </code>
+        
+        <h3>マテリアルの設定</h3>
+        <p>マテリアルには、時間、振幅、基本色、視点位置、環境マップなどのユニフォームが設定されています。これらはシェーダーで使用され、雲の動的な見た目に影響を与えます。</p>
+        <code>
+            uniforms: {
+                time: { value: 0.0 },
+                amplitude: { value: 5.0 },
+                baseColor: { value: new THREE.Color(0.8, 0.8, 0.9) },
+                viewPosition: { value: camera.position },
+                envMap: { value: 'cloud.jpg' }
+            }
+        </code>
+        
+        <h3>メッシュの作成と追加</h3>
+        <p>最後に、ジオメトリとマテリアルを使用してメッシュを作成し、シーンに追加します。</p>
+        <code>
+            const cloud = new THREE.Mesh(cloudGeometry, cloudMaterial);
+            scene.add(cloud);
+        </code>
+    </div>
+
+</body>
+</html>
