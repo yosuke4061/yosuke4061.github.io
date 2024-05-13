@@ -10,9 +10,9 @@ let liquidSpheres = []; // すべての水滴を格納する配列
 function init() {
 
      // カメラの作成
-     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.2, 800);
+     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
      camera.position.set(100, -20, 150);
-     camera.lookAt(0, 100, -50);
+     camera.lookAt(0, 100, 0);
     // レンダラーの作成
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -28,11 +28,9 @@ function init() {
 
         loadImagesAndCreateSpheres().then(() => {
             setupControls();
-            // アニメーションの開始を少し遅らせる
-            setTimeout(() => {
-                startAnimation();
-                loadingIndicator.style.display = 'none';
-            }, 2000);
+            startAnimation();
+            // ローディングインジケーターを非表示にする
+            loadingIndicator.style.display = 'none';
         }).catch(error => {
             console.error('画像のロード中にエラーが発生しました:', error);
             // エラーが発生した場合もインジケーターを非表示にする
@@ -125,9 +123,6 @@ function setupControls() {
     controls.maxAzimuthAngle = Math.PI / 2; // 90度
     controls.minAzimuthAngle = -Math.PI / 2; // -90度
     controls.enablePan = true;
-
-    // スマートフォンでの二点タッチによるパン操作を有効にする
-    controls.enableTouchPan = true;
 
     if (/Mobi|Android/i.test(navigator.userAgent)) {
         controls.panSpeed = 0.3;
@@ -279,7 +274,7 @@ function loadImagesAndCreateSpheres() {
                 scene.add(imageMesh);
 
                 // 5つの液体球を生成
-                for (let i = 0; i < 6; i++) {
+                for (let i = 0; i <8; i++) {
                     const randomColor = Math.random() * 0xffffff;
                     const randomSize = Math.random() * 15 + 3; // 5から25の範囲でサイズをランダムに設定
                     createLiquidSphere(randomColor, randomSize, randomPosition.clone(), camera, imagePath);
