@@ -272,8 +272,7 @@ function loadImagesAndCreateSpheres() {
     const imageFolder = 'pic/';
     const imageFolder_low = 'pic_low/';
     const imageFiles = ['20200112-_MG_0269.jpg', '20200121-_MG_0360.jpg', '20200121-_MG_0398.jpg', '20200220-_MG_0511.jpg'
-                        ,'20200227-_MG_0808-2.jpg', '20200227-_MG_0877.jpg', '20200228-_MG_0939-2.jpg', '20200229-_MG_1123.jpg',
-                        '20200309-_MG_1414-3.jpg', '20200330-_MG_2001.jpg', '20200419-_MG_6608.jpg', '20200422-_MG_6692.jpg', '20200511-_MG_6824.jpg'];
+                        ,'20200227-_MG_0808-2.jpg'];
 
     const promises = imageFiles.map(file => {
         const imagePath = imageFolder + file;
