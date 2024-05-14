@@ -114,7 +114,7 @@ function createRefinedLightningEffect() {
         const mesh = new THREE.Mesh(geometry, material);
         scene.add(mesh);
 
-        // ライトの追加
+        // ライトの追
         const light = new THREE.PointLight(0xffffff, 0.5, 100); // ライトの強度を下げる
         light.position.set(x, y, z);
         scene.add(light);
@@ -142,7 +142,7 @@ function createRefinedLightningEffect() {
     function repeatRefinedLightning() {
         const currentTime = performance.now();
         if (currentTime - lastLightningTime > lightningInterval) {
-            // ランダムな初期位置と終点を生成
+            // ランダムな初期終���を生成
             const startX = Math.random() * 600 - 200; // -300から300の範囲で
             const startY = Math.random() * 600 - 200; // -300から300の範囲で
             const startZ = Math.random() * 600 - 100; // -300から300の範囲で
@@ -158,18 +158,19 @@ function createRefinedLightningEffect() {
 
     addAnimationCallback(repeatRefinedLightning);
 }
+
 function displayImagesInCircle() {
-    const imageNames = ['1', '2', '3', '4', '5', '6'];
+    const imageNames = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
     const loader = new THREE.TextureLoader();
-    const aspectRatio = window.innerWidth / window.innerHeight;
-    const imageWidth = 5; // 画像の幅を適切に設定
-    const imageHeight = imageWidth / aspectRatio; // 縦横比を維持
-    const radius = 10; // 円の半径
+    const radius = 20; // 円の半径
     const angleStep = Math.PI * 2 / imageNames.length; // 画像を配置する角度のステップ
 
     imageNames.forEach((name, index) => {
         loader.load(`pic/${name}.jpg`, (texture) => {
-            const material = new THREE.SpriteMaterial({ map: texture });
+            const aspectRatio = texture.image.width / texture.image.height;
+            const imageWidth = 15; // 像の基本幅を設定
+            const imageHeight = imageWidth / aspectRatio; // 縦横比に基づいて高さを計算
+            const material = new THREE.SpriteMaterial({ map: texture, depthTest: false });
             const sprite = new THREE.Sprite(material);
             sprite.scale.set(imageWidth, imageHeight, 1);
             const angle = angleStep * index;
@@ -177,9 +178,46 @@ function displayImagesInCircle() {
             const y = radius * Math.sin(angle);
             sprite.position.set(x, y, 0); // 画像を円周上に配置
             scene.add(sprite);
+
+            // クリックイベントの追加
+            sprite.userData = { isEnlarged: false, originalPosition: sprite.position.clone(), originalScale: sprite.scale.clone() };
         });
     });
 }
+
+function createRain() {
+    const rainCount = 1000;
+    const rainGeometry = new THREE.BufferGeometry();
+    const rainMaterial = new THREE.PointsMaterial({
+        color: 0xaaaaaa,
+        size: 0.8,
+        transparent: true
+    });
+
+    const positions = new Float32Array(rainCount * 3);
+    for (let i = 0; i < rainCount; i++) {
+        positions[i * 3] = Math.random() * 400 - 200; // x
+        positions[i * 3 + 1] = Math.random() * 500 - 250; // y
+        positions[i * 3 + 2] = Math.random() * 400 - 200; // z
+    }
+    rainGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+    const rain = new THREE.Points(rainGeometry, rainMaterial);
+    scene.add(rain);
+
+    addAnimationCallback(() => {
+        const positions = rain.geometry.attributes.position.array;
+        for (let i = 0; i < positions.length; i += 3) {
+            positions[i + 1] -= 1.5; // y
+            if (positions[i + 1] < -250) {
+                positions[i + 1] = 250;
+            }
+        }
+        rain.geometry.attributes.position.needsUpdate = true;
+    });
+}
+
+
 function init() {
 
      // カメラの作成
@@ -208,9 +246,77 @@ function init() {
     });
 
     window.addEventListener('resize', onWindowResize, false);
-
-
+    document.addEventListener('mousedown', onDocumentMouseDown, false);
 }
+
+function onDocumentMouseDown(event) {
+    event.preventDefault();
+
+    const mouse = new THREE.Vector2(
+        (event.clientX / window.innerWidth) * 2 - 1,
+        -(event.clientY / window.innerHeight) * 2 + 1
+    );
+
+    const raycaster = new THREE.Raycaster();
+    raycaster.setFromCamera(mouse, camera);
+    if (!scene) {
+        return;
+    }
+    const intersects = raycaster.intersectObjects(scene.children);
+
+    if (intersects.length > 0) {
+        const object = intersects[0].object;
+        if (object instanceof THREE.Sprite) {
+            toggleSprite(object);
+        }
+    }
+}
+
+function toggleSprite(sprite) {
+    const userData = sprite.userData;
+    if (!userData.isEnlarged) {
+        // 拡大アニメーション
+        userData.originalPosition = sprite.position.clone();
+        userData.originalScale = sprite.scale.clone();
+        userData.originalRenderOrder = sprite.renderOrder;
+        sprite.renderOrder = 1000;
+
+        let progress = 0;
+        function animateScaleUp() {
+            if (progress < 1) {
+                progress += 0.05;
+                const scale = userData.originalScale.clone().multiplyScalar(1 + 4 * progress);
+                sprite.scale.copy(scale);
+                requestAnimationFrame(animateScaleUp);
+            } else {
+                sprite.scale.set(userData.originalScale.x * 5, userData.originalScale.y * 5, 1);
+            }
+        }
+        animateScaleUp();
+        userData.isEnlarged = true;
+    } else if (userData.isEnlarged && !userData.isScaling) {
+        // 縮小アニメーション
+        userData.isScaling = true; // スケーリング中フラグを設定
+        let progress = 1;
+        function animateScaleDown() {
+            if (progress > 0) {
+                progress -= 0.05;
+                const scale = userData.originalScale.clone().multiplyScalar(1 + 4 * progress);
+                sprite.scale.copy(scale);
+                requestAnimationFrame(animateScaleDown);
+            } else {
+                sprite.scale.copy(userData.originalScale);
+                sprite.position.copy(userData.originalPosition);
+                sprite.renderOrder = userData.originalRenderOrder;
+                userData.isEnlarged = false;
+                userData.isScaling = false; // スケーリング中フラグを解除
+            }
+        }
+        animateScaleDown();
+    }
+}
+
+
 
 function startAnimation() {
 
@@ -233,15 +339,16 @@ function startAnimation() {
     createRefinedLightningEffect();
     createProceduralClouds();
     displayImagesInCircle();
+    createRain();
     animate(); // アニメーションループを開始する
 }
 
 function setupScene() {
     const SCENE_SETTINGS = {
-        backgroundColor: 0x292d3b,  // 背景色
-        fogColor: 0x000000,         // 霧の色
-        fogNear: 1,                 // 霧の開始距離
-        fogFar: 300,               // 霧の終了距離
+        backgroundColor: 0x333344,  // 背景色を少し暗めの色に変更
+        fogColor: 0x333344,         // 霧の色を背景色と同じに設定
+        fogNear: 50,                 // 霧の開始距離を調整
+        fogFar: 800,               // 霧の終了距離を調整
         ambientLightColor: 0xFFFFFF // 環境光の色
     };
 
@@ -260,13 +367,13 @@ function setupScene() {
     scene.add(directionalLight);
 
     // スポットライトの追加
-    const spotLight = new THREE.SpotLight(0xffffff, 1.5, 1000, Math.PI / 4, 0.5, 2);
+    const spotLight = new THREE.SpotLight(0xffffff, 2, 1000, Math.PI / 4, 0.25, 2); // 強度と減衰を調整
     spotLight.position.set(100, 300, 100);
     spotLight.castShadow = true;
     scene.add(spotLight);
 
     // ポイントライトの追加
-    const pointLight = new THREE.PointLight(0xffffff, 1, 500);
+    const pointLight = new THREE.PointLight(0xffffff, 1.5, 500); // 強度を少し上げる
     pointLight.position.set(-100, 200, -100);
     scene.add(pointLight);
 
@@ -335,4 +442,3 @@ function animate() {
 
 
 init();
-
