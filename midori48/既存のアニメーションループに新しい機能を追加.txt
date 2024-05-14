@@ -1,0 +1,42 @@
+既存のアニメーションループに新しい機能を追加するために、関数を上書きせずに単純に追加する方法として、コールバックリストを使用する方法があります。これにより、複数のアニメーション関数を管理し、それらを順番に実行することができます。
+コールバックリストを使用したアプローチ
+1. コールバックリストの作成: アニメーション関数を格納する配列（リスト）を作成します。
+2. アニメーション関数の追加: 新しいアニメーション関数をリストに追加するための関数を作成します。
+3. アニメーションループの更新: アニメーションループ内で、リスト内のすべてのアニメーション関数を順番に実行します。
+以下に、このアプローチを用いたコード例を示します。
+
+let animationCallbacks = [];
+
+function addAnimationCallback(callback) {
+    animationCallbacks.push(callback);
+}
+
+function animate() {
+    requestAnimationFrame(animate);
+    controls.update();
+
+    // 登録されたすべてのアニメーションコールバックを実行
+    animationCallbacks.forEach(callback => {
+        callback();
+    });
+
+    renderer.render(scene, camera);
+    stats.update();
+}
+
+// 画像と線の回転処理を追加
+addAnimationCallback(() => {
+    const rotationSpeed = 0.01; // 回転速度
+    sprites.forEach((sprite, index) => {
+        const angle = (index / sprites.length) * Math.PI * 2 + rotationSpeed * performance.now() / 1000;
+        sprite.position.x = Math.cos(angle) * radius;
+        sprite.position.y = Math.sin(angle) * radius;
+
+        const line = lines[index];
+        const positions = line.geometry.attributes.position;
+        positions.setXYZ(1, Math.cos(angle) * radius, Math.sin(angle) * radius, 0);
+        positions.needsUpdate = true;
+    });
+});
+
+init();
