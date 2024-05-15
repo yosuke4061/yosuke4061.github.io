@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>　高画素の画像の分割　高度な分割　解説</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: flex-start; /* Changed from center to flex-start */
+            align-items: center;
+            flex-direction: column; /* Change to column to stack elements vertically */
+            min-height: 100vh; /* Changed from height to min-height */
+            background-color: #f4f4f4;
+        }
+        #topBar {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        @media (max-width: 600px) {
+            button {
+                padding: 8px 16px;
+            }
+            #topBar {
+                padding: 15px;
+                font-size: 14px;
+            }
+        }
+        #content {
+            background-color: #ffffff;
+            color: #333;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 800px;
+            text-align: left;
+        }
+        code {
+            background-color: #eee;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        高画素の画像の分割　高度な分割　解説      
+    </div>
+    <button id="backButton">閉じる</button>
+    <script>
+        document.getElementById('backButton').addEventListener('click', function() {
+            window.close();
+        });
+    </script>
+
+
+    <div id="content">
+
+
+
+
+        <h2>clearDividedMeshes()</h2>
+        <p><strong>使用方法:</strong> この関数は、シーンから「dividedMesh」と名付けられたメッシュを探し出し、それらをシーンから削除し、関連するリソースを解放します。</p>
+        <p><strong>詳細:</strong><BR>
+        この関数は、Three.jsのシーン内の子要素をフィルタリングして、特定の名前（'dividedMesh'）を持つメッシュのみを選択します。選択されたメッシュは、forEachループを使用して個別に処理され、シーンから削除され、そのジオメトリとマテリアルのメモリが解放されます。<BR>
+        <code>
+        const removableObjects = scene.children.filter(obj =&gt; obj.name === 'dividedMesh');<BR>
+        removableObjects.forEach(obj =&gt; {<BR>
+            scene.remove(obj);<BR>
+            if (obj.geometry) obj.geometry.dispose();<BR>
+            if (obj.material) obj.material.dispose();<BR>
+        });
+        </code>
+        </p>
+    
+        <h2>placeImageInSceneWithAspectRatio(imagePath, scene, yPosition, callback)</h2>
+        <p><strong>使用方法:</strong> この関数は、指定された画像パスからテクスチャをロードし、アスペクト比を保持した平面メッシュをシーンに追加します。メッシュが準備できたら、指定されたコールバック関数を実行します。</p>
+        <p><strong>詳細:</strong><BR>
+        Three.jsのTextureLoaderを使用して画像をロードします。ロードが完了すると、画像のアスペクト比を計算し、その比率でPlaneGeometryを作成します。このジオメトリと基本的なマテリアルを使用してメッシュを作成し、シーンに追加します。最後に、コールバック関数が提供されている場合は、その関数を実行します。<BR>
+        <code>
+        const textureLoader = new THREE.TextureLoader();<BR>
+        textureLoader.load(imagePath, (texture) =&gt; {<BR>
+            const aspectRatio = texture.image.width / texture.image.height;<BR>
+            const planeGeometry = new THREE.PlaneGeometry(100 * aspectRatio, 100);<BR>
+            const planeMaterial = new THREE.MeshBasicMaterial({<BR>
+                map: texture,<BR>
+                side: THREE.DoubleSide,<BR>
+                transparent: true<BR>
+            });<BR>
+            const planeMesh = new THREE.Mesh(planeGeometry, planeMaterial);<BR>
+            scene.add(planeMesh);<BR>
+            if (callback) {<BR>
+                callback(planeMesh);<BR>
+            }<BR>
+        });
+        </code>
+        </p>
+    
+        <h2>divideImageIntoTriangles(planeMesh, divisions, maxDistance)</h2>
+        <p><strong>使用方法:</strong> この関数は、指定された平面メッシュを複数の三角形に分割し、それぞれをシーンにランダムな位置に追加します。</p>
+        <p><strong>詳細:</strong><BR>
+        元のメッシュのテクスチャをクローンし、それを使用して複数の小さな三角形メッシュを作成します。これらのメッシュは、指定された分割数に基づいて配置され、各メッシュはランダムな位置に配置されます。これにより、動的で視覚的に興味深いエフェクトが生まれます。<BR>
+            <code>
+            for (let i = 0; i < divisions; i++) {<BR>
+                for (let j = 0; j < divisions; j++) {<BR>
+                    const clonedTexture = texture.clone();<BR>
+                    clonedTexture.offset.x = i / divisions;<BR>
+                    clonedTexture.repeat.x = 1 / divisions;<BR>
+                    clonedTexture.offset.y = 1 - (j + 1) / divisions;<BR>
+                    clonedTexture.repeat.y = 1 / divisions;<BR>
+                    const triangleGeometry = new THREE.BufferGeometry();<BR>
+                    const vertices = new Float32Array([<BR>
+                        0, 0, 0,  // 頂点1<BR>
+                        pieceWidth, 0, 0,  // 頂点2<BR>
+                        pieceWidth, pieceHeight, 0  // 頂点3<BR>
+                    ]);<BR>
+                    triangleGeometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));<BR>
+                    const uv = new Float32Array([<BR>
+                        0, 0,<BR>
+                        1, 0,<BR>
+                        1, 1<BR>
+                    ]);<BR>
+                    triangleGeometry.setAttribute('uv', new THREE.BufferAttribute(uv, 2));<BR>
+                    triangleGeometry.computeVertexNormals();<BR>
+                    const triangleMaterial = new THREE.MeshBasicMaterial({<BR>
+                        map: clonedTexture,<BR>
+                        side: THREE.DoubleSide,<BR>
+                        transparent: true<BR>
+                    });<BR>
+                    const triangleMesh = new THREE.Mesh(triangleGeometry, triangleMaterial);<BR>
+                    triangleMesh.name = 'dividedMesh';<BR>
+                    triangleMesh.position.x = (Math.random() - 0.5) * maxDistance;<BR>
+                    triangleMesh.position.y = (Math.random() - 0.5) * maxDistance;<BR>
+                    triangleMesh.position.z = (Math.random() - 0.5) * maxDistance;<BR>
+                    triangleMesh.userData.rotationSpeed = { x: (Math.random() - 0.5) * 0.02, y: (Math.random() - 0.5) * 0.02, z: (Math.random() - 0.5) * 0.02 };<BR>
+                    triangleMesh.userData.movementSpeed = { x: (Math.random() - 0.5) * 0.2, y: (Math.random() - 0.5) * 0.2, z: (Math.random() - 0.5) * 0.2 };<BR>
+                    scene.add(triangleMesh);<BR>
+                }<BR>
+            }
+            </code>
+            </p>
+  </div>
+
+</body>
+</html>
