@@ -399,7 +399,7 @@ function setupControls() {
     controls.minAzimuthAngle = -Math.PI; // -90度
     controls.enablePan = true;
     // ズームアウトの最大距離を設定
-    controls.maxDistance = 50; // この値を適切な距離に設定してください
+    controls.maxDistance = 100; // この値を適切な距離に設定してください
 
     // スマートフォンでの二点タッチによパン操作を有効にする
     controls.enableTouchPan = true;
