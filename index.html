@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4256337388599252" crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <title>3D&WEB&Photo Midori Photo Art.</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
@@ -154,10 +153,10 @@
             </div>  
         </div>
         <div class="nav-bar">
-            <a href="#" class="nav-item" onclick="loadInitialAllContent()">全て表示</a>
-            <a href="#" class="nav-item" onclick="loadContent('情報空間写真作品')">情報空間写真作品</a>
-            <a href="#" class="nav-item" onclick="loadContent('開発室')">開発室</a>
-            <a href="#" class="nav-item" onclick="loadContent('脱線')">脱線</a>
+            <a href="#" class="nav-item" onclick="loadContent(); ">全て表示</a>
+            <a href="#" class="nav-item" onclick="loadContent('情報空間写真作品',)">情報空間写真作品</a>
+            <a href="#" class="nav-item" onclick="loadContent('開発室',)">開発室</a>
+            <a href="#" class="nav-item" onclick="loadContent('脱線',)">脱線</a>
         </div>
         <br><br>
         <div id="content-display"></div>
@@ -212,6 +211,7 @@
             </div>
         </div>
         <br><br>
+
         <div class="footer-link" tabindex="0" onclick="toggleContent(this)">免責事項
             <div class="footer-content" style="display: none;">
                 <div class="disclaimer">
@@ -274,7 +274,56 @@
                 element.style.display = 'block';
             }
         }        
+        document.addEventListener('DOMContentLoaded', function() {
+            loadContent('', 9);
+         });
 
+        async function loadContent(category = null, maxRows = null) {
+            try {
+                const response = await fetch('data.csv', { cache: 'no-cache' });
+                if (!response.ok) {
+                    throw new Error('Network response was not ok.');
+                }
+                const data = await response.text();
+                let rows = data.split('\n').map(row => row.split(',')).filter(row => row.length > 1 && row[0]); // 空の行を除外
+
+                if (category) {
+                    rows = rows.filter(row => row[0] === category); // カテゴリに基づいてフィルタリング
+                }
+
+                const rowsToDisplay = maxRows ? rows.slice(0, maxRows) : rows; // maxRowsが指定されていればその数だけ、指定されていなければ全ての行を表示
+
+                const contentContainer = document.getElementById('content-display');
+                contentContainer.innerHTML = ''; // 既存のコンテンツをクリア
+
+                for (const row of rowsToDisplay) {
+                    const div = document.createElement('div');
+                    div.className = 'content-item';
+                    let lastModified = '';
+                    if (row[1]) {
+                        try {
+                            const fileResponse = await fetch(row[1], { method: 'HEAD' });
+                            lastModified = fileResponse.headers.get('Last-Modified');
+                        } catch (error) {
+                            console.error('Error fetching file info:', error);
+                        }
+                    }
+                    div.innerHTML = `
+                        <h3>${row[0] || 'タイトル不明'}</h3>
+                        <p><strong>File Address（コンテンツ）:</strong> ${row[1] ? `<a href="${row[1]}" target="_blank">${row[1]}</a>` : '情報がありません'}</p>
+                        <p><strong>Last Modified（更新日時）:</strong> ${lastModified || '情報が取得できません'}</p>
+                        <p><strong>Date（日付）:</strong> ${row[2] || '日付不明'}</p>
+                        <p><strong>Details（題名）:</strong> ${row[3] || '詳細不明'}</p>
+                        <p><strong>Explain（解説）:</strong> ${row[4] ? `<a href="${row[4]}" target="_blank">${row[4]}</a>` : '解説がありません'}</p>
+                    `;
+                    contentContainer.appendChild(div);
+                }
+            } catch (error) {
+                console.error('Failed to load content:', error);
+            }
+        }
+
+         /**
         async function loadContent(category) {
             const response = await fetch('data.csv', { cache: 'no-cache' });
             const data = await response.text();
@@ -307,13 +356,6 @@
                 contentContainer.appendChild(div);
             });
         }
-        //window.onload = function() {
-        //  loadInitialContent();
-        //};        
-        document.addEventListener('DOMContentLoaded', function() {
-             loadInitialContent();
-         });
-
         async function loadInitialContent() {
             const response = await fetch('data.csv', { cache: 'no-cache' });
             const data = await response.text();
@@ -386,6 +428,7 @@
             console.error('Failed to load all content:', error);
         }
     }
+        **/
     </script>
 </body>
 </html>
