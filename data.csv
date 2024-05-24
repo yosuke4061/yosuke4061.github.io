@@ -11,45 +11,45 @@
 開発室,midori42/index.html,2024/5/17,数学的な物体の表示,
 開発室,midori41/index.html,2024/5/16,画像色調コントロール　オブジェクトのテクスチャに効果を適応させる,
 開発室,midori40/index.html,2024/5/15,画像のライティング調整　空間内の光の度合いを調整　dat.guiライブラリ利用,
-開発室,midori39/index.html,2024/5/15,高画素の画像の分割　高度な分割,midori39/explain.html
-開発室,midori38/index.html,2024/5/14,高解像度（７０００ｐｘぐらい）の画像操作,midori38/explain.html
-開発室,midori37/index.html,2024/5/14,液体の浮遊,midori37/explain.html
+開発室,midori39/index.html,2024/5/15,高画素の画像の分割　高度な分割,
+開発室,midori38/index.html,2024/5/14,高解像度（７０００ｐｘぐらい）の画像操作,
+開発室,midori37/index.html,2024/5/14,液体の浮遊,
 脱線,udon/20240505.html,2024/5/13,Udon Sobaのつぶやき,
-開発室,midori36/index.html,2024/5/13,雲の高度な表現手法　平面を利用した雲の表現,midori36/explain.html
+開発室,midori36/index.html,2024/5/13,雲の高度な表現手法　平面を利用した雲の表現,
 情報空間写真作品,midori35/index.html,2024/5/13,「結　羽」桜,
 開発室,midori34/index.html,2024/5/12,水　液体　液体を透過して画像を。。画像が液体に投影されているようにする,
 開発室,midori33/index.html,2024/5/12,水　液体　水滴みたいな感じの液体を空間に浮かせる,
 開発室,midori32/index.html,2024/5/11,水の表現　　初歩。動的な光の差し込み　水面のみの水槽,
 開発室,midori31/index.html,2024/5/10,水の表現　　初歩。水面のみの水槽　,
 開発室,midori30/index.html,2024/5/7,「結　星」,
-開発室,midori29/index.html,2024/5/7,流体動作　低重力の高反発力の粒子の動き,midori29/explain.html
+開発室,midori29/index.html,2024/5/7,流体動作　低重力の高反発力の粒子の動き,
 開発室,midori28/index.html,2024/5/7,三次元流体シミュレーションの初歩,
 開発室,midori27/index.html,2024/5/6,流体簡易版,
 開発室,midori26/index.html,2024/5/6,ワープ表現,
 情報空間写真作品,midori25/index.html,2024/5/6,「結　羽」　鐘,
-開発室,midori24/index.html,2024/5/6,three.js サンプルプログラムの改良　山岳と霧,midori24/explain.html
-開発室,midori23/index.html,2024/5/6,ベースとなる空間の定義 開発しやすいように見直し　負荷表示　モジュール式の読み込み importmap利用,midori23/explain.html
+開発室,midori24/index.html,2024/5/6,three.js サンプルプログラムの改良　山岳と霧,
+開発室,midori23/index.html,2024/5/6,ベースとなる空間の定義 開発しやすいように見直し　負荷表示　モジュール式の読み込み importmap利用,
 情報空間写真作品,midori22/index.html,2024/5/5,この一枚の写真から。ビル街をイメージした空間,
-開発室,midori21/index.html,2024/5/5,線形数式の様々な表示,midori21/explain.html
-開発室,midori20/index.html,2024/5/5,球体をクリックすると粒子が飛び出す,midori20/explain.html
+開発室,midori21/index.html,2024/5/5,線形数式の様々な表示,
+開発室,midori20/index.html,2024/5/5,球体をクリックすると粒子が飛び出す,
 脱線,udon/20240505.html,2024/5/5,Udon Sobaのぼやき,
-開発室,midori19/index.html,2024/5/5,球体の上下運動のデモ,midori19/explain.html
+開発室,midori19/index.html,2024/5/5,球体の上下運動のデモ,
 開発室,midori18/index.html,2024/5/5,雲　初期　没のネタ,
 開発室,midori17/index.html,2024/5/5,雨の雰囲気の実験サンプル 地面にぶつかったら弾ける,
 情報空間写真作品,midori16/index.html,2024/5/3,結　糸,
-開発室,midori15/index.html,2024/5/3,水面のの中に球体を設置　波の波動の影響が球体も同じように波打つ,midori15/explain.html
-開発室,midori14/index.html,2024/5/3,水の表現　その2　画像の高度な波打ち,midori14/explain.html
-開発室,midori13/index.html,2024/5/3,水の表現　その１　テクスチャをお見込み、それを演算で波打つようにする,midori13/explain.html
-開発室,midori00/index.html,2024/5/1,空間の定義,midori00/explain.html
+開発室,midori15/index.html,2024/5/3,水面のの中に球体を設置　波の波動の影響が球体も同じように波打つ,
+開発室,midori14/index.html,2024/5/3,水の表現　その2　画像の高度な波打ち,
+開発室,midori13/index.html,2024/5/3,水の表現　その１　テクスチャをお見込み、それを演算で波打つようにする,
+開発室,midori00/index.html,2024/5/1,空間の定義,
 情報空間写真作品,midori01/index.html,2024/5/1,桜筆　夜桜,
 情報空間写真作品,midori02/index.html,2024/5/1,結　星空　ZERO式,
 情報空間写真作品,midori03/index.html,2024/5/1,トビラ 赤,
 開発室,midori04/midori_photo_art_040.html,2024/5/1,球体の中の写真　のいろいろテスト,
 情報空間写真作品,midori05/index.html,2024/5/1,トビラ　青,
 開発室,midori06/index.html,2024/5/1,炎の表現　下から上に向かて炎が上っているののをソフトウェア的に表現,
-開発室,midori07/index.html,2024/5/1,点群データの線形表現　クジラ,midori07/explain.html
-開発室,midori08/index.html,2024/5/1,点群データの線形表現 動的　クジラ ランダムに散らばった点群が徐々にクジラの形になるプログラム,midori08/explain.html
-開発室,midori09/index.html,2024/5/1,宇宙空間の星々の背景表現,midori09/explain.html
-開発室,midori10/index.html,2024/5/1,複雑な形状を模したオブジェクトを空間に回転して配置,midori10/explain.html
-開発室,midori11/index.html,2024/5/1,オブジェクト移動の残像表現　ブラー効果の実現,midori11/explain.html
-情報空間写真作品,midori12/index.html,2024/5/1,「結　羽」,midori12/explain.html
+開発室,midori07/index.html,2024/5/1,点群データの線形表現　クジラ,
+開発室,midori08/index.html,2024/5/1,点群データの線形表現 動的　クジラ ランダムに散らばった点群が徐々にクジラの形になるプログラム,
+開発室,midori09/index.html,2024/5/1,宇宙空間の星々の背景表現,
+開発室,midori10/index.html,2024/5/1,複雑な形状を模したオブジェクトを空間に回転して配置,
+開発室,midori11/index.html,2024/5/1,オブジェクト移動の残像表現　ブラー効果の実現,
+情報空間写真作品,midori12/index.html,2024/5/1,「結　羽」,
