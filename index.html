@@ -71,7 +71,7 @@
         .footer-link {
             color: #4CAF50;
             cursor: pointer;
-            font-size: 0.8em; /* 小さい文字サイズ */
+            font-size: 1.8em; /* 小さい文字サイズ */
             position: relative; /* ポジショニングの基準点 */
         }
         .footer-content, .contact-content {
@@ -127,6 +127,7 @@
     </style>
 </head>
 <body>
+    <script type="text/javascript">rakuten_design="slide";rakuten_affiliateId="3c73b1b8.c1386aa0.3c73b1b9.5cd2454f";rakuten_items="ctsmatch";rakuten_genreId="0";rakuten_size="728x200";rakuten_target="_blank";rakuten_theme="gray";rakuten_border="on";rakuten_auto_mode="on";rakuten_genre_title="off";rakuten_recommend="on";rakuten_ts="1716538422611";</script><script type="text/javascript" src="https://xml.affiliate.rakuten.co.jp/widget/js/rakuten_widget.js?20230106"></script>
     <div class="container">
         <div class="header">3D&WEB&Photo Midori Photo Art.</div>
         <div class="content">
@@ -154,9 +155,10 @@
         </div>
         <div class="nav-bar">
             <a href="#" class="nav-item" onclick="loadContent(); ">全て表示</a>
+            <a href="#" class="nav-item" onclick="loadContent('記事',)">記事</a>
             <a href="#" class="nav-item" onclick="loadContent('情報空間写真作品',)">情報空間写真作品</a>
             <a href="#" class="nav-item" onclick="loadContent('開発室',)">開発室</a>
-            <a href="#" class="nav-item" onclick="loadContent('脱線',)">脱線</a>
+            <a href="#" class="nav-item" onclick="loadContent('脱線',)">つぶやきｗ</a>
         </div>
         <br><br>
         <div id="content-display"></div>
@@ -310,7 +312,7 @@
                     }
                     div.innerHTML = `
                         <h3>${row[0] || 'タイトル不明'}</h3>
-                        <p><strong>File Address（3D）:</strong> ${row[1] ? `<a href="${row[1]}" target="_blank">${row[1]}</a>` : '情報がありません'}</p>
+                        <p><strong>File Address（コンテンツ）:</strong> ${row[1] ? `<a href="${row[1]}" target="_blank">${row[1]}</a>` : '情報がありません'}</p>
                         <p><strong>Last Modified（更新日時）:</strong> ${lastModified || '情報が取得できません'}</p>
                         <p><strong>Date（日付）:</strong> ${row[2] || '日付不明'}</p>
                         <p><strong>Details（題名）:</strong> ${row[3] || '詳細不明'}</p>
