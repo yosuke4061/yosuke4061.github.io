@@ -310,11 +310,11 @@
                     }
                     div.innerHTML = `
                         <h3>${row[0] || 'タイトル不明'}</h3>
-                        <p><strong>File Address（コンテンツ）:</strong> ${row[1] ? `<a href="${row[1]}" target="_blank">${row[1]}</a>` : '情報がありません'}</p>
+                        <p><strong>File Address（3D）:</strong> ${row[1] ? `<a href="${row[1]}" target="_blank">${row[1]}</a>` : '情報がありません'}</p>
                         <p><strong>Last Modified（更新日時）:</strong> ${lastModified || '情報が取得できません'}</p>
                         <p><strong>Date（日付）:</strong> ${row[2] || '日付不明'}</p>
                         <p><strong>Details（題名）:</strong> ${row[3] || '詳細不明'}</p>
-                        <p><strong>Explain（解説）:</strong> ${row[4] ? `<a href="${row[4]}" target="_blank">${row[4]}</a>` : '解説がありません'}</p>
+
                     `;
                     contentContainer.appendChild(div);
                 }
