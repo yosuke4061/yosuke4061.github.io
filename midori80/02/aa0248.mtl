@@ -1,0 +1,12 @@
+# Blender 4.1.1 MTL File: 'None'
+# www.blender.org
+
+newmtl Liquid_Domain_Material
+Kd 0.280095 0.900000 0.712826
+Ks 0.640244 0.640244 0.640244
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 0.252941
+illum 6
+Pr 0.400000
+Pm 0.800000
