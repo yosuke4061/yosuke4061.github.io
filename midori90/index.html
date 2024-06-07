@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>簡易版トーンカーブ　シェーダー利用　解説</title>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: flex-start; /* Changed from center to flex-start */
+            align-items: center;
+            flex-direction: column; /* Change to column to stack elements vertically */
+            min-height: 100vh; /* Changed from height to min-height */
+            background-color: #f4f4f4;
+        }
+        #topBar {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        @media (max-width: 600px) {
+            button {
+                padding: 8px 16px;
+            }
+            #topBar {
+                padding: 15px;
+                font-size: 14px;
+            }
+        }
+        #content {
+            background-color: #ffffff;
+            color: #333;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 800px;
+            text-align: left;
+        }
+        code {
+            background-color: #000; /* 黒背景 */
+            color: #00ff00; /* 明るい緑色の文字 */
+            border-radius: 5px;
+            padding: 10px; /* パディングを追加 */
+            display: block; /* ブロックレベル要素に設定 */
+            width: 100%; /* 幅を100%に設定 */
+            overflow-x: auto; /* 横方向にスクロールバーを表示 */
+
+        }
+    </style>
+</head>
+<body>
+
+    <button id="backButton">閉じる</button>
+    <script>
+        document.getElementById('backButton').addEventListener('click', function() {
+            window.close();
+        });
+    </script>
+    <div id="content">
+        <h1>トーンカーブシェーダーの基本</h1>
+        <p>この記事では、<a href="../midori41/index.html">Midori41</a>で使用されている簡易版トーンカーブシェーダーのコードについて、初心者にもわかりやすく解説します。</p>
+        
+        <h2>トーンカーブとは？</h2>
+        <p>トーンカーブは、画像の明るさやコントラストを調整するための強力なツールです。このカーブを操作することで、画像の明るい部分や暗い部分を細かく調整し、全体の画質を向上させることができます。</p>
+
+        <h2>シェーダーの概要</h2>
+        <p>ToneCurveShaderは、画像の明るさを調整し、コントラストを強調するために使用されるシェーダーです。このシェーダーは、Three.jsフレームワークを使用し、WebGLを介してGPU上で実行されます。</p>
+        
+        <h2>シェーダーのコンポーネント</h2>
+        <h3>Uniforms</h3>
+        <p>シェーダーには以下のパラメータが渡されます：</p>
+        <ul>
+            <li><strong>map</strong>: テクスチャのマップ</li>
+            <li><strong>curveIntensity</strong>: カーブの強度</li>
+            <li><strong>minBrightness</strong>: 最小明るさ</li>
+            <li><strong>maxBrightness</strong>: 最大明るさ</li>
+        </ul>
+        <pre><code>// Uniformsの定義部分
+uniforms: {
+    map: { type: 't', value: null },
+    curveIntensity: { type: 'f', value: 1.0 },
+    minBrightness: { type: 'f', value: 0.0 },
+    maxBrightness: { type: 'f', value: 1.0 }
+}</code></pre>
+        
+        <h3>Vertex Shader</h3>
+        <p>頂点シェーダーは、各頂点の位置を計算し、テクスチャ座標をフラグメントシェーダーに渡します。</p>
+        <pre><code>// Vertex Shaderのコード
+vertexShader: `
+    varying vec2 vUv;
+    void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+`</code></pre>
+        
+        <h3>Fragment Shader</h3>
+        <p>フラグメントシェーダーは、ピクセルごとに色を計算します。以下のステップで処理が行われます：</p>
+        <ol>
+            <li>テクスチャから色を取得</li>
+            <li>色の平均値を計算して明るさを求める</li>
+            <li>明るさを制限</li>
+            <li>カーブを適用</li>
+            <li>計算されたカーブ値で色を調整して出力</li>
+        </ol>
+        <pre><code>// Fragment Shaderのコード
+fragmentShader: `
+    uniform sampler2D map;
+    uniform float curveIntensity;
+    uniform float minBrightness;
+    uniform float maxBrightness;
+    varying vec2 vUv;
+    void main() {
+        vec4 texColor = texture2D(map, vUv);
+        float brightness = (texColor.r + texColor.g + texColor.b) / 3.0;
+        brightness = clamp(brightness, minBrightness, maxBrightness);
+        float curve = pow(brightness, curveIntensity);
+        gl_FragColor = vec4(curve, curve, curve, 1.0) * texColor;
+    }
+`</code></pre>
+        
+        <h2>シェーダーコード</h2>
+        <pre><code>const ToneCurveShader = {
+    uniforms: {
+        map: { type: 't', value: null },
+        curveIntensity: { type: 'f', value: 1.0 },
+        minBrightness: { type: 'f', value: 0.0 },
+        maxBrightness: { type: 'f', value: 1.0 }
+    },
+    vertexShader: `
+        varying vec2 vUv;
+        void main() {
+            vUv = uv;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+    `,
+    fragmentShader: `
+        uniform sampler2D map;
+        uniform float curveIntensity;
+        uniform float minBrightness;
+        uniform float maxBrightness;
+        varying vec2 vUv;
+        void main() {
+            vec4 texColor = texture2D(map, vUv);
+            float brightness = (texColor.r + texColor.g + texColor.b) / 3.0;
+            brightness = clamp(brightness, minBrightness, maxBrightness);
+            float curve = pow(brightness, curveIntensity);
+            gl_FragColor = vec4(curve, curve, curve, 1.0) * texColor;
+        }
+    `
+};</code></pre>
+    </div>
+        <p>このシェーダーは、画像の明るさを非線形に調整し、視覚的なコントラストを強調します。カーブの形状と影響の度合いは、<code>curveIntensity</code>を変更することで調整可能です。</p>
+    </div>
+</body>
+</html>
